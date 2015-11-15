@@ -1,0 +1,94 @@
+%----------------------------------------------------------------------------------------
+%	Statistics
+%----------------------------------------------------------------------------------------
+\section{Basic Statistics}
+
+%------------------------------------------------
+% Deduction and Induction
+\subsection{Deduction and Induction}
+
+\textbf{Deduction}: if $A \rightarrow B$ and $A$ is true, then $B$ is true. \\
+\textbf{Induction}: if $A \rightarrow B$ and $B$ is true, then $A$ is more plausible. \\
+
+%------------------------------------------------
+% Conditional Probability and Bayes Theorem
+\subsection{Conditional Probability and Bayes' Theorem}
+
+The \textbf{conditional probability} of an event $A$ assuming that $B$ has occured, denoted $P(A|B)$, is given by:
+
+\begin{equation}
+P(A|B)=\frac{P(A \cap B)}{P(B)}.
+\end{equation}
+
+Via multiplication:
+
+\begin{equation}
+P(A \cap B) = P(A|B)P(B).
+\label{equation:pAUB}
+\end{equation}
+
+This makes sense. The probability of $A$ \textit{and} $B$ is the probability of $A$ \textit{given} $B$ times the probability of $B$. Or, just as reasonably, the probability of $A$ \textit{and} $B$ is the probability of $B$ \textit{given} $A$ times the probability of $A$. As an aside, the equation above can be generalized:
+
+\begin{equation}
+P(A \cap B \cap C) = P(A|B \cap C) P(B \cap C) = P(A|B \cap C) P(B|C) P(C).
+\end{equation}
+
+Back to the derivation, since $P(A \cap B) = P(B \cap A)$, we can use equation \ref{equation:pAUB}:
+
+\begin{equation}
+P(A|B)P(B) = P(B|A)P(A).
+\end{equation}
+
+And re-arranging gives \textbf{Bayes' Theorem}:
+\begin{equation}
+P(A|B) = \frac{P(A)P(B|A)}{P(B)} = \frac{P(A)}{P(B)} P(B|A).
+\label{equation:simpleBayes}
+\end{equation}
+
+% DEFINE prior prob, conditional prob, posterior prob. 
+In this equation, $P(A)$ is the \textbf{prior probability}, the initial degree of belief in $A$, or the probability of $A$ before $B$ is observed. It is essentially the probability that hypothesis $A$ is true before evidence is collected. The \textbf{posterior probability} $P(A|B)$ is the degree of belief after taking $B$ into account. 
+
+Bayes' theorem describes the probability of an event, based on conditions that might be relevant to the event. With the Bayesian probability interpretation the theorem expresses how a subjective degree of belief should rationally change to account for evidence (\textbf{Bayesian inference}). Note: in the \textbf{Frequentist Interpretation}, probability measures a proportion of outcomes, not probability of belief. 
+
+Bayes' theorem can also be interpreted in the following manner: $A$ is some hypothesis, and $B$ is the evidence for that hypothesis. 
+
+The equation makes intuitive sense, particularly in the last form in which it is presented. If $P(B) \gg P(A)$,  the probability $P(A|B)$ will be small because B \textit{usually} occurs without $A$ occurring. Even if $P(B|A)$ were 100\%, the posterior probability would still be small. On the other hand, if $P(A) \gg P(B)$, $P(A|B)$ is high, even if the conditional probability $P(B|A)$ is smaller. 
+
+Nate Silver has a discussion of Bayesian statistics in "The Signal And The Noise", p245. Let $x$ be the initial estimate of the hypothesis likelihood (\textbf{prior probability}). In the book, $x$ is the initial estimate that your spouse is cheating. $y$ is a conditional probability - the probability of an observation being made given that the hypothesis is true. So $y$ in his case was the probability of underwear appearaing conditional on the spouse cheating. $z$ is the probability of an observation being made given that the hypothesis is false. So $z$ was the probability of underwear appearing if the spouse was not cheating. The \textbf{posterior probability} is the revised estimate of the hypothesis likelihood. In Silver's case, the likelihood that the spouse is cheating on you, given that underwear was found. The posterior probability is given by the expression:
+
+\begin{equation}
+x' = \frac{xy}{xy+z(1-x)}.
+\end{equation}
+
+In Silver's formulation, the denominator is equivalent to the total probability of an observation being made (total probability of underwear being found). So it is the probability of the hypothesis being true times the associated conditional probability of the observation of underwear plus the probability of the hypothesis being false times the associated conditional probability of the observation.
+
+Note that this method can be applied recursively by substituting $x'$ for $x$ in the expression. 
+
+
+EVERYTHING BELOW NEEDS REWORKING
+
+There is a recursive form of Bayes' theorem, to account for series of data. WHAT IS IT?
+
+\begin{equation}
+S \equiv \bigcup_{i=1}^{N} A_{i},
+\end{equation}
+
+so that $A_{i}$ is an event in $S$, and $A_{i} \cap A_{j} = \emptyset$ $\forall$ $i \not= j$. Then:
+
+\begin{equation}
+A = A \bigcap S = A \bigcap ( \bigcup_{i=1}^{N} A_{i} ) = \bigcup_{i=1}^{N} (A \cap A_{i})
+\end{equation}
+
+Then we can compare the probabilities using the Law of Total Probability:
+
+\begin{equation}
+P(A) = P(\bigcup_{i=1}^{N} (A \cap A_{i}))=\sum_{i=1}^{N} P(A \cap A_{i}) = \sum_{i=1}^{N} P(A_{i}) P(A|A_{i})
+\end{equation}
+
+Using substitution into Bayes' Theorem (equation \ref{equation:simpleBayes}), we have a recursive form of Bayes' Theorem:
+
+\begin{equation}
+P(A_{j} | A) = \frac{P(A_{j}) P(A | A_{j})}{\sum_{i=1}^{N} P(A_{i}) P(A|A_{i})}.
+\end{equation}
+
+% CORRELATION VS COVARIANCE
