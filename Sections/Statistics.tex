@@ -62,12 +62,9 @@ x' = \frac{xy}{xy+z(1-x)}.
 
 In Silver's formulation, the denominator is equivalent to the total probability of an observation being made (total probability of underwear being found). So it is the probability of the hypothesis being true times the associated conditional probability of the observation of underwear plus the probability of the hypothesis being false times the associated conditional probability of the observation.
 
-Note that this method can be applied recursively by substituting $x'$ for $x$ in the expression. 
+Note that this method can be applied recursively by substituting $x'$ for $x$ in the expression. We can also come up with a recurrent form of Bayes theorem as formulated in \ref{equation:simpleBayes} by letting $P(A_{n+1}) = P(A_{n}|B)$.
 
-
-EVERYTHING BELOW NEEDS REWORKING
-
-There is a recursive form of Bayes' theorem, to account for series of data. WHAT IS IT?
+The derivation below is from mathworld's article on Bayes' Theorem. In this example, let $A$ and $S$ be sets. Furthermore, let 
 
 \begin{equation}
 S \equiv \bigcup_{i=1}^{N} A_{i},
@@ -85,10 +82,32 @@ Then we can compare the probabilities using the Law of Total Probability:
 P(A) = P(\bigcup_{i=1}^{N} (A \cap A_{i}))=\sum_{i=1}^{N} P(A \cap A_{i}) = \sum_{i=1}^{N} P(A_{i}) P(A|A_{i})
 \end{equation}
 
-Using substitution into Bayes' Theorem (equation \ref{equation:simpleBayes}), we have a recursive form of Bayes' Theorem:
+Using substitution into Bayes' Theorem (equation \ref{equation:simpleBayes}), we have a new form:
 
 \begin{equation}
 P(A_{j} | A) = \frac{P(A_{j}) P(A | A_{j})}{\sum_{i=1}^{N} P(A_{i}) P(A|A_{i})}.
 \end{equation}
+
+What is the meaning of this? The denominator is simply $P(A)$, expressed as the sum of its constituents. So this reduces exactly to Bayes theorem as in \ref{equation:simpleBayes}, with $A \rightarrow A_{j}$ and $B \rightarrow A$.
+
+%------------------------------------------------
+% Correlation and Covariance
+\subsection{Correlation and Covariance}
+
+Correlation and covariance are similar. Both concepts describe the degree to which two random variables or sets of random variables tend to deviate from their expected values in similar ways.
+
+Let $X$ and $Y$ be two random variables, with means $\mu_{X}$ and $\mu_{Y}$ and standard deviations $\sigma_{X}$ and $\sigma_{Y}$, respectively. The \textbf{covariance} is defined (using $\langle \rangle$ to denote expectation value):
+
+\begin{equation}
+\sigma_{XY} = \langle (X - \langle X \rangle) (Y - \langle Y \rangle) \rangle.
+\end{equation}
+
+Similarly, the \textbf{correlation} of the two variables is defined:
+
+\begin{equation}
+\rho_{XY} = \frac{\langle (X - \langle X \rangle) (Y - \langle Y \rangle) \rangle}{\sigma_{X} \sigma_{Y}}.
+\end{equation}
+
+So correlation is dimensionless, while covariance is the multiple of the units of the two variables. \textbf{Variance} is simply the covariance of a variable with itself ($\sigma_{XX}$ is usually denoted $\sigma_{X}^{2}$, the square of the standard deviation). The correlation of a variable with itself is always 1, except in the degenerate case where the two variances are zero and the correlation does not exist.  
 
 % CORRELATION VS COVARIANCE
