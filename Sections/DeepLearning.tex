@@ -21,6 +21,39 @@ Explain the use cases of each type of algorithm.
 %Subsection: RBM: Restricted Boltzmann Machines
 \subsection{RBM: Restricted Boltzmann Machines}
 
+https://www.cs.toronto.edu/~hinton/absps/guideTR.pdf \\
+
+"\textbf{Restricted Boltzmann machines (RBMs)} have been used as generative models of many different types of data including labeled or unlabeled images (Hinton et al., 2006a), windows of mel-cepstral coefficients that represent speech (Mohamed et al., 2009), bags of words that represent documents (Salakhutdinov and Hinton, 2009), and user ratings of movies (Salakhutdinov et al., 2007). In their conditional form they can be used to model high-dimensional temporal sequences such as video or motion capture data (Taylor et al., 2006) or speech (Mohamed and Hinton, 2010). Their most important use is as learning modules that are composed to form deep belief nets (Hinton et al., 2006a)." \\
+
+The training procedure for RBMs is more complicated than back-propagation. They typically use a procedure called constrastive divergence (Hinton, 2002). There are several meta-parameters including learning rate, momentum, weight-cost, sparsity target, initial weights, number of hidden units, and mini-batch sizes. \\
+
+For simplicity, the outline below will consider a two-layer network consisting of the visible unit layer representing the input data and a layer of hidden units called \textbf{feature detectors}. Deep neural networks can be trained by successively stacking RBMs, with the hidden layer of the first RBM used as an input for the second. Greedy pairwise training of layers has been demonstrated to be effective in learning deep architectures (reference greedy pair training). Input data are stochastic binary pixels (or continuous variables scaled to $[0,1]$). Feature detectors are also stochastic binary units. The visible units are connected to the feature detectors using symmetrtically weighted connections. A configuration of visible and hidden units has an energy (Hopfield, 1982) given by:
+
+\begin{equation}
+E(\textbf{v},\textbf{h}) = - \sum_{i} a_{i} v_{i} -\sum_{j} b_{j} h_{j} - \sum_{i}\sum_{j}v_{i}h_{i}w_{ij}
+\end{equation}
+
+for $i \in visible$ and $j \in hidden$. In this equation, $v_{i}$ and $h_{j}$ are the binary states of the visible unit $i$ and hidden unit $j$, respectively. $a_{i}$ and $b_{j}$ are their biases and $w_{ij}$ is the weight between them. 
+
+The energy can be used to define a probability of this pairing of visible and hidden units (hence the name "Boltzmann Machine":
+
+\begin{equation}
+p(\textbf{v},\textbf{h}) = \frac{1}{\mathcal{Z}} e^{-E(\textbf{v},\textbf{h})}
+\end{equation}
+
+Z is the partition function:
+
+\begin{equation}
+\mathcal{Z} = \sum_{\textbf{v},\textbf{h}} e^{-E(\textbf{v},\textbf{h})}
+\end{equation}
+
+A probability assigned by the network for a visible vector $\textbf{v}$ can be calculated by summing $p(\textbf{v},\textbf{h})$ over all possible hidden vectors:
+
+\begin{equation}
+p(\textbf{v}) = \frac{1}{\mathcal{Z}} \sum_{\textbf{h}} e^{-E(\textbf{v},\textbf{h})}
+\end{equation}
+
+% Resume in change of weights derivation
 %------------------------------------------------
 %Subsection: CNN: Convolutional Neural Networks
 \subsection{CNN: Convolutional Neural Networks}
