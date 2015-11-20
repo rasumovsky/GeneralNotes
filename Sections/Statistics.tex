@@ -33,7 +33,7 @@ This makes sense. The probability of $A$ \textit{and} $B$ is the probability of 
 P(A \cap B \cap C) = P(A|B \cap C) P(B \cap C) = P(A|B \cap C) P(B|C) P(C).
 \end{equation}
 
-Back to the derivation, since $P(A \cap B) = P(B \cap A)$, we can use equation \ref{equation:pAUB}:
+Back to the derivation, since $P(A \cap B) = P(B \cap A)$, we can use Equation \ref{equation:pAUB}:
 
 \begin{equation}
 P(A|B)P(B) = P(B|A)P(A).
@@ -62,7 +62,7 @@ x' = \frac{xy}{xy+z(1-x)}.
 
 In Silver's formulation, the denominator is equivalent to the total probability of an observation being made (total probability of underwear being found). So it is the probability of the hypothesis being true times the associated conditional probability of the observation of underwear plus the probability of the hypothesis being false times the associated conditional probability of the observation.
 
-Note that this method can be applied recursively by substituting $x'$ for $x$ in the expression. We can also come up with a recurrent form of Bayes theorem as formulated in \ref{equation:simpleBayes} by letting $P(A_{n+1}) = P(A_{n}|B)$.
+Note that this method can be applied recursively by substituting $x'$ for $x$ in the expression. We can also come up with a recurrent form of Bayes theorem as formulated in Equation \ref{equation:simpleBayes} by letting $P(A_{n+1}) = P(A_{n}|B)$.
 
 The derivation below is from mathworld's article on Bayes' Theorem. In this example, let $A$ and $S$ be sets. Furthermore, let 
 
@@ -82,13 +82,13 @@ Then we can compare the probabilities using the Law of Total Probability:
 P(A) = P(\bigcup_{i=1}^{N} (A \cap A_{i}))=\sum_{i=1}^{N} P(A \cap A_{i}) = \sum_{i=1}^{N} P(A_{i}) P(A|A_{i})
 \end{equation}
 
-Using substitution into Bayes' Theorem (equation \ref{equation:simpleBayes}), we have a new form:
+Using substitution into Bayes' Theorem (Equation \ref{equation:simpleBayes}), we have a new form:
 
 \begin{equation}
 P(A_{j} | A) = \frac{P(A_{j}) P(A | A_{j})}{\sum_{i=1}^{N} P(A_{i}) P(A|A_{i})}.
 \end{equation}
 
-What is the meaning of this? The denominator is simply $P(A)$, expressed as the sum of its constituents. So this reduces exactly to Bayes theorem as in \ref{equation:simpleBayes}, with $A \rightarrow A_{j}$ and $B \rightarrow A$.
+What is the meaning of this? The denominator is simply $P(A)$, expressed as the sum of its constituents. So this reduces exactly to Bayes theorem as in Equation \ref{equation:simpleBayes}, with $A \rightarrow A_{j}$ and $B \rightarrow A$.
 
 %------------------------------------------------
 % Correlation and Covariance
