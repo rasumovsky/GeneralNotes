@@ -56,10 +56,28 @@ Z is the partition function:
 \mathcal{Z} = \sum_{\textbf{v},\textbf{h}} e^{-E(\textbf{v},\textbf{h})}
 \end{equation}
 
-A probability assigned by the network for a visible vector $\textbf{v}$ can be calculated by summing $p(\textbf{v},\textbf{h})$ over all possible hidden vectors:
+The network assigns a probability to a visible vector $\textbf{v}$, which can be calculated by summing $p(\textbf{v},\textbf{h})$ over all possible hidden vectors:
 
 \begin{equation}
 p(\textbf{v}) = \frac{1}{\mathcal{Z}} \sum_{\textbf{h}} e^{-E(\textbf{v},\textbf{h})}
+\end{equation}
+
+A higher energy input is a less-probable input, according to the energy function. The network is trained to increase the probability (lowering the energy) assigned by the network to signal inputs while lowering the probability (increasing the energy) assigned to noise. To get the change in weights:
+
+\begin{equation}
+\frac{\delta \log p(\textbf{v})}{\delta w_{ij}} = \langle v_{i} h_{j} \rangle_{data} - \langle v_{i} h_{j} \rangle_{model}
+\end{equation}
+
+The angle brackets denote expectation values under the specified distribution (data or model). A learning rule for weights using stochastic gradient ascent on the log probability, and a learning rate $\epsilon$, is then simply:
+
+\begin{equation}
+\delta w_{ij} = \epsilon ( \langle v_{i} h_{j} \rangle_{data} - \langle v_{i} h_{j} \rangle_{model} ).
+\end{equation}
+
+Now all that remains is to get an unbiased sample of $\langle v_{i} h_{j} \rangle_{data}$ and $\langle v_{i} h_{j} \rangle_{model}$. The first one is straightforward, since there are no connections between hidden units of the same layer in an RBM. Given a randomly selected training image, $\textbf{v}$, the binary state, $h_{j}$ , of each hidden unit, j, is set to 1 with probability 
+
+\begin{equation}
+p(h_{j}=1 | \textbf{v}) = \sigma ( b_{j} + \sum_{i} v_{i} w_{ij} )
 \end{equation}
 
 % Resume in change of weights derivation
