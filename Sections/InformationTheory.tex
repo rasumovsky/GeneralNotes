@@ -14,3 +14,23 @@ There's also entropy H times the number of symbols in a message. This measure of
 Landauer's Principle: A change in H*N is equal to a change in physical entropy when the information system is perfectly efficient. 
 
 What does entropy mean? It is a measure of the uncertainty involved in predicting the value of a random variable. Example: a coin flip with 50 \% probabilities of heads or tails provides less information than a die roll with a $\frac{1}{6}$ probability per side. 
+
+The Shannon entropy H in units of bits per symbol is given by
+
+\begin{equation}
+H = - \sum_{i} f_{i} \log_{2} (f_{i}) = - \sum_{i} \log_{2} (\frac{c_{i}}{N}).
+\end{equation}
+
+In this equation, $i$ is an index over distinct symbols, $f_{i}$ is the frequency of symbols occurring in the message, and $c_{i}$ is the number of times the $i^{th}$ symbol occurs in the message of length $N$. $H N$ is the entropy of a message. This has units of bits (not bits per symbol). 
+
+Example: a Bernoulli (binary) trial where $X=1$ occurs with some probability. The entropy $H(X)$ of the trial is maximized when the two possible outcomes are equally probable ($P(X=1) = 0.5$).
+
+\begin{tabular}{l | l}
+\textbf{Boltzmann H} & \textbf{Shannon H} \\
+\hline
+physical systems of particles & information systems of symbols \\
+entropy per particle & entropy per symbol \\
+probability of a microstate & probability of a symbol \\
+Extensive physical entropy $S$ & Entropy of file or msssage $HN$ \\
+
+\end{tabular}
