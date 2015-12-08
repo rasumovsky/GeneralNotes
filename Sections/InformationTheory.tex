@@ -5,6 +5,18 @@
 
 Information theory deals with quantifying information. It was developed by Claude Shannon with the goal of establishing limits on signal processing operations such as data compression, reliable storage, and communcation (cite wiki). 
 
+The basic unit of information is the \textbf{bit}, a portmanteau of binary digit. It can have values of 0 or 1, and could represent boolean states (false/true) or activation states (off/on) among other things. \textbf{Bit-length} refers to the length of a binary number. Table \ref{table:datatypes} lists common data types from the IEEE Standard For Floating Point Arithmetic (IEEE 754). 
+
+\begin{tabular}{ l | c | l }
+data type & bit length & bit assignment \\
+\hline
+signed int & 32 & Bit string with range [$-2^{31}, 2^{31}-1]$ \\
+unsigned int & 32 & Bit string with range $[0, 2^{32}-1]$ \\
+float & 32 & 1 sign, 8 exponent , 24 significand precision \\
+double & 64 & 1 sign, 11 exponent, 53 significand precision \\ 
+\label{table:datatypes}
+\end{tabular}
+
 \subsection{Entropy}
 
 Shannon entroy H - the average number of bits per symbol needed to store or communicate a message. "Bits assumes $\log_{2}$. "It is analogous to intensive physical entropies like molar and specific entropy $S_{0}$ but not extensive physical entropy $S$."
@@ -32,5 +44,4 @@ physical systems of particles & information systems of symbols \\
 entropy per particle & entropy per symbol \\
 probability of a microstate & probability of a symbol \\
 Extensive physical entropy $S$ & Entropy of file or msssage $HN$ \\
-
 \end{tabular}
