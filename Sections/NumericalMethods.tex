@@ -5,6 +5,10 @@
 
 This section describes a number of methods for solving common problems in scientific programming, such as root-finding, minimization, regression, and matrix algebra. The discussions of each algorithm contain information on the algorithm complexity, the implementation, and the relative merits of the approach. 
 
+%------------------------------------------------
+% Subsection: Errors
+\subsection{Errors}
+
 Many of the methods discussed provide numerical solutions rather than analytic solutions. This means that results will be approximations, and as such will have an associated error. \textbf{Approximation error} or \textbf{absolute error} is the discrepancy between an exact value and an approximation to that exact value. Such errors can occur because approximations are used instead of real data, or because the measurement of data is imprecise. 
 
 Absolute error is given by:
@@ -17,9 +21,25 @@ Relative error is defined:
 \eta = \frac{\epsilon}{|v|} = |1 - \frac{v_{approx.}}{v}|
 \end{equation}
 
+There are two primary error types for numerical methods: \textbf{roundoff errors} due to computer approximations, and \textbf{truncation errors} due to mathematical approximations. It is useful to avoid subtraction in numerical methods because subtraction leads to an increase in the relative significance of roundoff errors. Subtracting two very similar, very large numbers will lead to a very small difference. This is called \textbf{catastrophic cancellation}, and is demonstrated in the subtraction below.
+
+\begin{equation}
+0.12345678912345678 - 0.12345678900000000 = 0.00000000012345678.
+\end{equation}
+
+But on a 10-digit floating-point machine, the calculation gives:
+
+\begin{equation}
+0.1234567891 - 0.1234567890 = 0.0000000001.
+\end{equation}
+
+Two concepts related to error are accuracy and precision. \textbf{Accuracy} is how closely a computed or measured value agrees with the truth value. \textbf{Precision} is how closely individually computed or measured values agree with each other. For example, a darts player with tight clusters is a very precise thrower. But if the clusters are not centered around the target, they are inaccurate. In numerical methods, the term error can be used to represent both the innaccuracy and imprecision of calculations. 
+
 %------------------------------------------------
 % Subsection: Root-Finding
 \subsection{Root-Finding}
+
+\textbf{Root-finding} is a search for all values of $\vec{x}$ such that $f(\vec{x})=0$. \textbf{Optimization} problems can be expressed as root-finding problems. To minimize or maximize a function $g(\vec{x})$, perform a root-finding search on $g'(\vec{x})$ (search for the the values of $\vec{x}$ such that $g'(\vec{x})=0$). 
 
 The \textbf{bisection method} is a simple root-finding method that repeatedly bisects an interval and selects the subinterval containing the root for further bisection. Advantages: sthe algorithm is simple to code recursively, and it is robust (always converges). Disadvantages: it is a relatively slow algorithm. 
 
