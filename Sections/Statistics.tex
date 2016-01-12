@@ -48,6 +48,8 @@ P(A|B) = \frac{P(A)P(B|A)}{P(B)} = \frac{P(A)}{P(B)} P(B|A).
 % DEFINE prior prob, conditional prob, posterior prob. 
 In this equation, $P(A)$ is the \textbf{prior probability}, the initial degree of belief in $A$, or the probability of $A$ before $B$ is observed. It is essentially the probability that hypothesis $A$ is true before evidence is collected. The \textbf{posterior probability} $P(A|B)$ is the degree of belief after taking $B$ into account. 
 
+In a nutshell, Bayes' theorem is a method for calculating the validity of beliefs based on available evidence. "Initial belief plus new evidence equals new and improved belief."
+
 Bayes' theorem describes the probability of an event, based on conditions that might be relevant to the event. With the Bayesian probability interpretation the theorem expresses how a subjective degree of belief should rationally change to account for evidence (\textbf{Bayesian inference}). Note: in the \textbf{Frequentist Interpretation}, probability measures a proportion of outcomes, not probability of belief. 
 
 Bayes' theorem can also be interpreted in the following manner: $A$ is some hypothesis, and $B$ is the evidence for that hypothesis. 
@@ -63,6 +65,14 @@ x' = \frac{xy}{xy+z(1-x)}.
 In Silver's formulation, the denominator is equivalent to the total probability of an observation being made (total probability of underwear being found). So it is the probability of the hypothesis being true times the associated conditional probability of the observation of underwear plus the probability of the hypothesis being false times the associated conditional probability of the observation.
 
 Note that this method can be applied recursively by substituting $x'$ for $x$ in the expression. We can also come up with a recurrent form of Bayes theorem as formulated in Equation \ref{equation:simpleBayes} by letting $P(A_{n+1}) = P(A_{n}|B)$.
+
+Yet another formulation, which is explained by the logic in the previous paragraph, is given by: 
+
+\begin{equation}
+P(A|X) = \frac{P(X|A) P(A)}{P(X|A) P(A) + P(X|not A)P(not A)}
+\end{equation}
+
+$P(A|X)$ is the probability of hypothesis $A$, given a positive observation $X$. $P(X|A)$ is the probability of the observation of $X$ under hypothesis $A$. $P(A)$ is the probability of the hypothesis.
 
 The derivation below is from mathworld's article on Bayes' Theorem. In this example, let $A$ and $S$ be sets. Furthermore, let 
 
@@ -89,6 +99,8 @@ P(A_{j} | A) = \frac{P(A_{j}) P(A | A_{j})}{\sum_{i=1}^{N} P(A_{i}) P(A|A_{i})}.
 \end{equation}
 
 What is the meaning of this? The denominator is simply $P(A)$, expressed as the sum of its constituents. So this reduces exactly to Bayes theorem as in Equation \ref{equation:simpleBayes}, with $A \rightarrow A_{j}$ and $B \rightarrow A$.
+
+"In many cases, estimating the prior is just guesswork, allowing subjective factors to creep into your calculations. You might be guessing the probability of something that, unlike cancer, does not even exist, such as strings, multiverses, inflation or God. You might then cite dubious evidence to support your dubious belief. In this way, Bayes' theorem can promote pseudoscience and superstition as well as reason." From http://blogs.scientificamerican.com/cross-check/bayes-s-theorem-what-s-the-big-deal/
 
 %------------------------------------------------
 % Correlation and Covariance
