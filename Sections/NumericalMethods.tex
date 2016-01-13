@@ -41,7 +41,13 @@ Two concepts related to error are accuracy and precision. \textbf{Accuracy} is h
 
 \textbf{Root-finding} is a search for all values of $\vec{x}$ such that $f(\vec{x})=0$. \textbf{Optimization} problems can be expressed as root-finding problems. To minimize or maximize a function $g(\vec{x})$, perform a root-finding search on $g'(\vec{x})$ (search for the the values of $\vec{x}$ such that $g'(\vec{x})=0$). 
 
-The \textbf{bisection method} is a simple root-finding method that repeatedly bisects an interval and selects the subinterval containing the root for further bisection. Advantages: sthe algorithm is simple to code recursively, and it is robust (always converges). Disadvantages: it is a relatively slow algorithm. 
+\subsubsection{Bracketing Methods}
+
+\textbf{Bracketing methods} are a class of root-finding algorithm. The basic principle is to guess an initial bracket, or range in which the root exists. The size of the bracket is then reduced iteratively until the error is acceptably small. Bracketing methods are extremely reliable. They always converge, but are slow and require more iterations to do so than more sophisticated algorithms. 
+
+One simple way to use bracketing methods is to choose an initial range$[a,b]$ such that $f(a)$ and $f(b)$ have opposite signs. For continuous functions, this implies that $\exists$ $c\in[a,b]$ such that $f(c)=0$.
+
+The \textbf{bisection method} is a simple root-finding method that repeatedly bisects an interval and selects the subinterval containing the root for further bisection. Advantages: the algorithm is simple to code recursively, and it is robust (always converges). Disadvantages: it is a relatively slow algorithm. 
 
 Given a function $f$ that is continuous on the interval $[a,b]$ with $f(a)$ and $f(b)$ having opposite signs, the bisection method is guaranteed to converge. The absolute error is reduced by half during each application of the method. As a result, the bisection method \textit{converges linearly}. It is significantly slower than other available algorithms. An upper bound on the absolute error (difference between the true and numerical result) can be determined by assuming the worst case scenario, that the root is at the midpoint of the interval $c = (a+b)/2$:
 
