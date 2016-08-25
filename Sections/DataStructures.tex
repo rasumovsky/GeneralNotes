@@ -184,7 +184,7 @@ A data structure is recursive if it can be defined in terms of itself.
 % Subsection: Searching
 \subsection{Searching in an Array}
 
-There are two basic approaches to searching in an array: \textbf{sequential} search and \textbf{binary} search. Sequential search involves looking at each value in turn. It is faster for sorted arrays $O(N)$. Binary search (for sorted array) involves looking at the middle item, comparing with the value of interest, then eliminating half of the array from the search $O(log(N))$. 
+There are two basic approaches to searching in an array: \textbf{sequential} search and \textbf{binary} search. Sequential search involves looking at each value in turn. It is faster for sorted arrays $O(N)$. Binary search (for sorted array) involves looking at the middle item, comparing with the value of interest, then eliminating half of the array from the search $O(\log(N))$. 
 
 %------------------------------------------------
 % Subsection: Tree Structure
@@ -260,7 +260,7 @@ A binary search tree has efficient implementations of the insert, contains, remo
 
 Of course, it is also possible to design a BST that stores data along with each key. 
 
-The l\texttt{ookup(K key)} method is an example of a recursive algorithm. The base cases are an empty tree, which returns false, or value is in the root node, which returns true. Check the root, left, and right subtrees. The worst-case lookup for a BST is $O(N)$, and corresponds to a stalky shape. Best case performance for a BST lookup is $O(log(N))$ for a full, balanced tree. 
+The l\texttt{ookup(K key)} method is an example of a recursive algorithm. The base cases are an empty tree, which returns false, or value is in the root node, which returns true. Check the root, left, and right subtrees. The worst-case lookup for a BST is $O(N)$, and corresponds to a stalky shape. Best case performance for a BST lookup is $O(\log(N))$ for a full, balanced tree. 
 
 Question: how do you \textbf{delete} a node in a tree with children? And with what do you replace the deleted node? Possibilities:
 \begin{itemize}
@@ -276,10 +276,24 @@ A few additional tree types are listed below.
 	\item \textbf{Full tree}: all the leaves have the same depth. 
 	\item \textbf{Complete tree}: full to depth H-1, depth H filled from left to right. 
 	\item \textbf{Height-balanced tree}: difference in heights of \textit{left} and \textit{right} subtrees is at most 1. 
-	\item \textbf{Balanced tree}: has a height of $O(log(N))$, where $N$=\# nodes.
+	\item \textbf{Balanced tree}: has a height of $O(\log(N))$, where $N$=\# nodes.
 \end{itemize}
 
 \subsubsection{Red-Black Trees}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.75\columnwidth]{Figures/restructure.pdf}
+\caption{An example of a \textbf{tri-node restructuring} procedure for a red-black tree c.o. James D. Skrentny, University of Wisconsin CS367).}
+\label{fig:trinoderestructuring}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.75\columnwidth]{Figures/recoloring.pdf}
+\caption{An example of a \textbf{recoloring} procedure for a red-black tree (c.o. James D. Skrentny, University of Wisconsin CS367).}
+\label{fig:recoloring}
+\end{figure}
 
 \textbf{Red-black trees} (RBT) are a type of balanced tree. In order to preserve balance, the \texttt{insert} and \texttt{delete} operations may restructure the tree. Each node of the tree has a \textbf{color} (red or black), and 3 properties hold:
 
@@ -289,7 +303,7 @@ A few additional tree types are listed below.
 	\item \textbf{Black property}: for each node with at least 1 null child, the number of black nodes on the path from the root to the null child is the same. 
 \end{itemize}
 
-We want to perform insert, lookup, delete, and print operations on this tree. Lookup and print for the RBT are identical to those of the BST. The lookup, insert, delete operations have $O(log(N))$ complexity for the worst-case. 
+We want to perform insert, lookup, delete, and print operations on this tree. Lookup and print for the RBT are identical to those of the BST. The lookup, insert, delete operations have $O(\log(N))$ complexity for the worst-case. 
 
 Here's an overview of the RBT insert algorithm for node with key K. 
 
@@ -307,18 +321,230 @@ Insertion can lead to a red property violation \textbf{RPV}. Here's how to deal 
 	\item \textit{Case 2b}: if P's sibling S is red, do a \textbf{recoloring} of P, S, G (unless G is the root). 
 \end{itemize}
 
+\subsubsection{Balanced Search Trees}
+
+There are other types of search trees that preserve the $O(\log(N))$ tree height that produces efficient operations for $N$ nodes. Other than red-black trees there are also AVL and BTree objects. 
+
+An \textbf{AVL} is a height-balanced binary search tree. It was the first such structure to be invented, and is named after its Soviet inventors. 
+\begin{itemize}
+	\item Keeps a balance value for each node (-1, 0, +1).
+	\item Detect problem when balance becomes $\pm 2$. 
+	\item Fix by \textbf{rotation}. 
+\end{itemize}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.75\columnwidth]{Figures/Tree_rotation.pdf}
+\caption{An example of a tree rotation (By Ramasamy at the English language Wikipedia, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=4043513).}
+\label{fig:rotation}
+\end{figure}
+
+\textbf{BTrees} relax the binary tree structure by allowing 2, 3, 4 descendant nodes (the number of allowed nodes is called the order). BTrees are also referred to sometimes as 2-3 trees or 2-3-4 trees. When 4 nodes are detected, they are split. 
+
+%------------------------------------------------
+% Subsection: Priority Queues
+\subsection{Priority Queues}
+
+\textbf{Priority queues} are a data structure where priorities are put into the object and highest priorities are removed from the object. Here are the basic priority queue operations:
+
+\indent \indent \texttt{boolean isEmpty()} \\
+\indent \indent \texttt{void insert(Comparable p);} \\
+\indent \indent \texttt{void insert(Comparable p);} \\
+\indent \indent \texttt{Comparable removeMax();} \\
+\indent \indent \texttt{Comparable getMax();} \\
+
+To implement the priority queue efficiently, a new data structure called a heap will be implemented. A \textbf{heap} is a binary tree with two special properties.
+
+\begin{itemize}
+	\item \textbf{Order property} for every node N, the value N is greater than or equal to the values in its children. 
+	\item \textbf{Shape property} 
+	\begin{itemize}
+		\item All leaves are at depth $d$ or $(d-1)$.
+		\item All of the leaves at depth $(d-1)$ are to the right of the leaves at depth $d$.
+		\item There is at most 1 node with just 1 child. That child is the left child of its parent. It is the rightmost leaf at depth $d$. 
+	\end{itemize}
+\end{itemize}
+
+The \textbf{root} of the heap is always in \texttt{array[1]}. If a node is in \texttt{array[k]}, the left child is in \texttt{array[2*k]}, the right child is in \texttt{array[2*k+1]}, and the parent is in \texttt{array[k/2]}.
+
+Implementing \textbf{heap insert}:
+\begin{itemize}
+	\item add new value at the end of the array (preserve shape),
+	\item swap with parent until order property holds, or get to root.
+\end{itemize}
+
+Implementing \textbf{heap removeMax}:
+\begin{itemize}
+	\item replace the value with the value at the end of the array (removing leaf), 
+	\item work way down the tree, swapping value with the larger child to restore the order property.
+\end{itemize}
+
+The insert and remove operations described above are for a \textbf{max heap}. Of course, it is also possible to have a \textbf{min heap} along the same lines. 
+
+%------------------------------------------------
+% Subsection: Hashing
+\subsection{Hashing}
+
+\textbf{Hashing} is a technique that is $O(1)$ average complexity for insert, lookup, and delete operations. The basic idea is to store values (\textit{keys}) in an array, computing each key's position in the array as a function of its value. The array storing data is referred to as the \textbf{hash table}, while the function that maps keys to array indices is called the \textbf{hash function}. It is good to use efficient hash functions. For example, one can convert the key value to an integer modulo the table size. 
+
+One issue that arises with hashing is that multiple data items might map to the same array index. \textbf{Collisions} occur when key values map to the same index. There are a few tricks that help to avoid collisions. First, it is best to use a table that is 1.25 times the size of the expected number of items and then to expand the hash table as necessary. Second, it is good to have a \textit{prime} table size, so that hashing functions that include multiplication by some factor don't send all keys to the same bucket after the hash function modulation. Ideally, you want the generator for the hash index to use a constant that is co-prime with the hash table length. 
+
+\textbf{Buckets} are used to handle keys that get mapped to the same array index. \textit{LinkedList} buckets can be used for the buckets. This structure would give $O(1)$ complexity for insertion but $O(N)$ worst-case complexity for other operations. Another option would be to use a BST bucket, which would give $O(\log(N))$ worst-case complexity when all keys are mapped to one index.
+
+Java has a \texttt{hashCode()} method for every Object, including \texttt{Strings}. 
+
+Another way to handle collisions is through open addressing. If there is a collision, search for an unused element elsewhere in the table using a \textbf{probe sequence}. The list below uses $H$ to represent the hash function result for an item $k$:
+
+\begin{itemize}
+	\item \textit{linear probing}: $H(k), H(k)+1, H(k)+2, ...$ \% table size
+	\item \textit{quadratic probing}: $H(k), (H(k)+1)^{2}, (H(k)+2)^{2}, ...$ \% table size
+	\item \textit{double hashing}: $H(k), (H(k)+step), (H(k)+2\cdot step), ...$ \% table size
+\end{itemize}
 
 %------------------------------------------------
 % Subsection: Graph Structure
 \subsection{Graph Structure}
 
-Define the \textbf{depth-first search}, \textbf{breadth-first search}, etc.
+\textbf{Graphs} are a generalization of the tree structure. They have \textbf{nodes} connected by \textbf{edges} (also called \textit{vertices} or \textit{arcs}). A nide can have any number of incoming or outgoing edges. There are directed and undirected graphs.
 
-\textbf{Dijkstra's algorithm} is an algorithm for finding the shortest paths between nodes in a graph \cite{DijkstraAlgorithm}. The original form of Dijkstra's algorithm has time complexity $O(|V|^{2})$, where $|V|$ is the number of nodes. However, there is a priority-queue implementation of the algorithm that has worst-case performance of $O(|E|+|V| \log |V|)$, where $|E|$ is the number of edges. 
+\textbf{Undirected graphs} have nodes which are connected by edges without any direction. Connected (adjacent) nodes are simply referred to as \textbf{neighbors}. 
 
-Dijkstra's algorithm is known as a uniform-cost search, and is a type of best-first search. 
+\textbf{Directed graphs} have neighbor nodes that are connected by edges with a \textbf{direction}. The source of the edge is referred to as the \textbf{predecessor} node, while the target of the edge is referred to as the \textbf{successor} node. 
+
+\textbf{Paths} can be taken through the nodes in a graph. A \textit{cyclic path} is a path in which the same node occurs twice. An \textit{acyclic path} path is a path in which no node is repeated. Note: a node can connect an edge to itself. 
+
+Here are some types of graphs:
+\begin{itemize}
+	\item \textit{directed acyclic graph (DAG)}: a directed graph that has NO cyclic paths. 
+	\item \textit{Complete graph}: an undirected graph that has an edge between every pair of nodes, or a directed graph that has an edge from every node to every other node. 
+	\item \textit{Weighted graph}: A graph with values associated with the edges. 
+	\item Ptextit{Network}: A weighted di-graph (directed graph) with non-negative weights. 
+\end{itemize}
+
+\subsubsection{Depth-First Search}
+
+A \textbf{depth-first search}, or DFS, is a method for searching through the nodes in a graph. It usually is implemented with a \textit{stack} or \textit{recursive} structure. The idea is to start at some node $n$, then follow an edge of of $n$, then another edge, getting as far away from $n$ as possible before visiting any more of $n$'s successors. 
+\begin{itemize}
+	\item start with all nodes marked "unvisited"
+	\item mark $n$ "visited"
+	\item recursively do a DFS from each of $n$'s unvisited successors. 
+\end{itemize}
+
+The time for this search is $O(N+E)$, where N=\# nodes and E=\# edges in the graph. A boolean in the node class could store visited information.
+
+There are many applications of the depth-first search. It can answer questions like the following.
+\begin{itemize}
+	\item Is a graph connected?
+	\item Does the graph contain a cycle?
+	\item Is there a path between two nodes?
+	\item What nodes are reachable from the given node?
+	\item Can the nodes be ordered so that, for every node $j$, $j$ comes before all of its successors?
+\end{itemize}
+
+Depth-first search is similar to the \textit{pre-order} traversal of the tree structure. 
+
+\subsubsection{Breadth-First Search}
+
+A \textbf{breadth-first search}, or BFS, is a method for searching through the nodes in a graph. The idea is to visit all nodes at the same distance from the starting node before visiting farther nodes. It is usually implemented with a \textit{queue} structure rather than through recursion. 
+
+\begin{itemize}
+	\item Start with all nodes "unvisited" and enqueue(n). 
+	\item Dequeue, mark node as visited, add the node's children to the queue if unvisited. 
+	\item Repeat previous line until queue is empty. 
+\end{itemize}
+
+Breadth-first search is similar to the \textit{level-order} traversal of the tree structure. It can be used to find the shortest path between points. \textit{Djikstra's algorithm} is an example of this. It finds the shortest path through a weighted non-negative graph and has complexity $O(E \log(N))$.
 
 %------------------------------------------------
-% Subsection: Hash Maps
-\subsection{Hash Maps}
+% Subsection: Sorting
+\subsection{Sorting}
 
+\textbf{Sorting} involves putting the values of an array into some order. \textbf{comparison sorts} work by comparing values. Simple algorithms are $O(N^{2})$, though the best-possible performance is $O(N\log(N))$. \\
+
+\begin{tabular}{p{0.3\textwidth}p{0.5\textwidth}}
+Name & Complexity \\
+\hline
+selection sort & w.c. $O(N^{2})$ \\
+insertion sort & w.c. $O(N^{2})$ \\
+merge sort & w.c. $O(N \log(N))$ \\
+quicksort & w.c. $O(N^{2})$, average $O(N \log(N))$ \\
+\end{tabular} \\
+
+\textbf{Stable sorting} algorithms also preseve the relative ordering for duplicate keys from the previous sorting. 
+
+\subsubsection{Selection Sort}
+
+\textbf{Selection sort} is an $O(N^{2})$ complexity sorting algorithm. The basic approach is to find the smallest value in an array \texttt{A} and then put it in \texttt{A[0]}. Then find the $n^{th}$ smallest value in \texttt{A} and put it in \texttt{A[n-1]}.
+
+\begin{itemize}
+	\item Use outer loop from \texttt{0} to \texttt{n-1}, letting \texttt{k} represent the index.
+	\item Use a nested loop from \texttt{k+1} to \texttt{n-1} to find index of smallest value.
+	\item Swap that value with \texttt{A[k]}. 
+	\item After $i^{th}$ iteration, \texttt{A[0]} through \texttt{A[i-1]} are ordered.
+\end{itemize}
+
+Complexity = $(N-1) + (N-2) + ... + 1 + 0 = O(N^{2})$.
+
+\subsubsection{Insertion Sort}
+
+\textbf{Insertion sort} is another $O(N^{2})$ complexity sorting algorithm. The basic approach is to put the first two items in correct relative order. Then insert the $3^{rd}$ item in the correct place relative to the first two. Then insert the $n^{th}$ item in the correct place relative to the previous $n-1$. 
+
+\begin{itemize}
+	\item Use outer loop from \texttt{k=1} to \texttt{k=n-1}.
+	\item Use inner loop from \texttt{j=k-1} to \texttt{0} \textit{as long as \texttt{A[j] > A[k]}}. 
+	\item Each time, shift higher numbers up (\texttt{A[j+1]=A[j]}) to make space for eventual insertion. 
+	\item Insert \texttt{A[k]} into final \texttt{A[j]}. 
+	\item After the $i^{th}$ iteration, \texttt{A[0]} through \texttt{A[i-1]} are relatively ordered but are not in the final position. 
+\end{itemize}
+
+\subsubsection{Merge Sort}
+
+\textbf{Merge sort} is an $O(N \log(N))$ \textit{divide and conquer} algorithm. It takes advantage of the fact that it is possible to merge two sorted arrays, each containing $N/2$ items, in $O(N)$ time. It works by simultaneously stepping through the two arrays and always choosing the smaller value to put in the final array. 
+
+\begin{itemize}
+	\item Divide the array into two halves.
+	\item Recursively sort the left half. 
+	\item Recursively sort the right half. 
+	\item Merge the two sorted halves (requires temporary auxiliary array). 
+\end{itemize}
+
+\subsubsection{Quick Sort}
+
+\textbf{Quick sort} is another on average $O(N \log(N)$ divide and conquer sorting algorithm. Compared with merge sort, it does more work during the "divide" part in order to avoid work in the "combine" part. The idea is to start by \textit{partitioning} the array using some \textit{median} value (or \textit{pivo} value). Then use 2 pointers at opposite ends of the array to perform swaps of values. 
+
+\begin{itemize}
+	\item Choose a pivot value -- put pivot at end of array (swap with existing).
+	\item Partition the array. Put all entries less than pivot in the left part and all entries greater than the pivot in the right part, with the pivot in the middle. 
+	\item Recursively, sort the values less than or equal to the pivot. 
+	\item Recursively, sort the values greater than or equal to the pivot. 
+\end{itemize}
+
+Note: a poorly chosen pivot can lead to $O(N^{2})$ complexity. The \textbf{median of three} technique can be useful for choosing a pivot: pick median value from sampling beginning, middle, and end of array. Upper value placed at end of array, median placed next to end, low value placed at beginning of array. 
+
+Note that the quick sort algorithm does not require extra storage space, unlike the merge sort algorithm. 
+
+\subsubsection{Heap Sort}
+
+\textbf{Heap sort} is an $O(N \log(N))$ complexity sorting algorithm. The idea is to insert each item into an initially empty heap. Then fill the array right-to-left as follows: while the heap is not empty, do one \texttt{removeMax} operation and put the returned value into the next position of the array. 
+
+\subsubsection{Radix Sort}
+
+\textbf{Radix sort} is not a comparison sort. It is useful on sequences of \textit{comparable} values, like sequences of characters or numbers. The time is $O((N + R)*L)$, where $N$ is the number of sequences, $R$ is the range of values ieach item could have, $L$ is the maximum length of the sequences. The approach uses an array of queues. 
+
+\begin{itemize}
+	\item Process each sequence right-to-left (least to most significant digit).
+	\item Each pass, values taken from original array and stored in a queue in the auxiliary array based on the value of the current digit. Note: the auxiliary array has length $L$, and the queues at each array position handle duplicates etx. 
+	\item Queues are dequeued back into the original array, ready for next pass.
+\end{itemize}
+
+The queue structure preserves previous ordering. It is often \textit{better} than $O(N \log(N))$. 
+
+\subsubsection{Bubble Sort}
+
+\textbf{Bubble sort} is a sorting algorithm of complexity $O(N^{2})$. Each pass through the unsorted part "bubbles" the next smallest item from unsorted to the back of the sorted part. 
+
+\begin{itemize}
+%	\item loop \texttt{(i=0; i<array_length-1):}
+%	\item loop \texttt{(j<array_length-1, j>i):}
+	\item swap \texttt{A[j]} with \texttt{A[j-1]} if it is smaller, so that small values bubble all the way down. 
+\end{itemize}
