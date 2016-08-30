@@ -548,3 +548,38 @@ The queue structure preserves previous ordering. It is often \textit{better} tha
 %	\item loop \texttt{(j<array_length-1, j>i):}
 	\item swap \texttt{A[j]} with \texttt{A[j-1]} if it is smaller, so that small values bubble all the way down. 
 \end{itemize}
+
+%------------------------------------------------
+% Subsection: Data Structures in C++
+\subsection{Data Structures in C++}
+
+The following table provides a description of some basic C++ data structures. 
+
+ \begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
+Name & Description \\
+\hline
+\texttt{array}
+\hfill
+\texttt{list} & Lists are sequence containers that allow constant time insertion and erase operations anywhere within the sequence, as well as iteration in both directions (doubly-linked). Similar to \texttt{forward\_list} except that \texttt{forward\_list} objects are single-linked lists, and can only be iterated forwards. They lack direct access to elements by their position, and require linear time in the distance between iterator position and target to lookup. They also consume extra memory to store linking information. \\
+\hfill \\
+\texttt{vector} & A sequence container representing array that can change in size. Use dynamically allocated array to store elements. Memory reallocations should only happen at logarithmically growing intervals of size, so that insertion at the end of a vector can be provided with amortized constant time complexity. \\
+\hfill \\
+\texttt{deque} & The double-ended queue is a sequence container with dynamic size that can be expanded or contracted on both ends. Usually implemented as some dynamic array. Unlike vectors, deques are not guaranteed to store all elements in contiguous storage locations. Any elements can be accessed in constant time. Worse than lists when frequent internal insertions or removals are needed. \\
+\hfill \\
+\texttt{stack} & A LIFO structure, container adaptor. Standard container classes are \texttt{vector}, \texttt{dequeue}, \texttt{list}. \\
+\hfill \\
+%\texttt{} &  \\
+%\texttt{} &  \\
+%\texttt{} &  \\
+%\texttt{} &  \\
+%\texttt{} &  \\
+\end{tabular} \\
+
+Concerning exceptions, C++ allows the user to use \texttt{try}, the \texttt{throw}, and \text{catch} as in Java. The difference is that in the catch clause, you list the exception \textit{type}: \\
+
+\indent \texttt{try \{} \\
+\indent \indent \texttt{throw 20;} \\
+\indent \texttt{\} catch (int e) \{} \\
+\indent \indent \texttt{cout $<<$ "An exception occurred, no. " $<<$ e $<<$ endl;} \\
+\indent \texttt{\}} \\
+
