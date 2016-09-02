@@ -31,6 +31,8 @@ Complexity is a way to gauge the performance of an algorithm: how much of the co
 
 We are usually interested in the worst case number of operations, not the exact number of operations, which can vary. The average and best cases do provide useful information, however. We use the \textit{big-O} notation to write complexity: $O(N)$ is linear complexity, $O(N^{2})$ is quadratic complexity, etc. 
 
+\textbf{Amortized complexity} is the total expense per operation, but is evaluated over many operations. This is useful when operations are occasionally much more expensive than on average. For instance, insertions in a hash table typically take constant time. However, if the array implementation needs to be expanded, the operation might take $O(N)$ time for a single operation. Amortized complexity is just a way of describing the worst case on-average behavior. 
+
 %------------------------------------------------
 %Subsection: ADTs
 \subsection{Abstract Data Types}
@@ -570,8 +572,8 @@ The following table provides a description of some basic C++ data structures.
  \begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
 Name & Description \\
 \hline
-\texttt{array}
-\hfill
+%\texttt{array}
+%\hfill
 \texttt{list} & Lists are sequence containers that allow constant time insertion and erase operations anywhere within the sequence, as well as iteration in both directions (doubly-linked). Similar to \texttt{forward\_list} except that \texttt{forward\_list} objects are single-linked lists, and can only be iterated forwards. They lack direct access to elements by their position, and require linear time in the distance between iterator position and target to lookup. They also consume extra memory to store linking information. \\
 \hfill \\
 \texttt{vector} & A sequence container representing array that can change in size. Use dynamically allocated array to store elements. Memory reallocations should only happen at logarithmically growing intervals of size, so that insertion at the end of a vector can be provided with amortized constant time complexity. \\
@@ -580,8 +582,9 @@ Name & Description \\
 \hfill \\
 \texttt{stack} & A LIFO structure, container adaptor. Standard container classes are \texttt{vector}, \texttt{dequeue}, \texttt{list}. \\
 \hfill \\
-%\texttt{} &  \\
-%\texttt{} &  \\
+\texttt{map} & Slower than \texttt{unordered\_map} for lookup, but faster at iterating over (ordered) elements. Often implemented as a binary search tree, with $O(\log(N))$ lookup time. \\
+\hfill \\
+\texttt{unordered\_map} & Implemented as a hash map in C++. Constant time lookup for the most part, amortized linear time lookup. \\
 %\texttt{} &  \\
 %\texttt{} &  \\
 %\texttt{} &  \\
