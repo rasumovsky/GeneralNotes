@@ -3,100 +3,108 @@
 %----------------------------------------------------------------------------------------
 \section{Deep Learning}
 
-%------------------------------------------------
-%Subsection: Overview
-\subsection{Overview}
-
-Explain the use cases of each type of algorithm. 
+This section discusses the basics of deep learning. The material is based largely on notes from the Google Udacity course "\href{https://www.udacity.com/course/deep-learning--ud730}{Deep Learning}". On a basic level, deep learning involves training multi-layer neural networks to transform an input data vector into a particular output vector. The networks can be trained in a supervised manner by providing the input data along with the desired output vector, or in an unsupervised way by training the network to build internal, compressed representations of the data in order to reconstruct the input data.
 
 %------------------------------------------------
-%Subsection: Perceptrons
-\subsection{Perceptrons}
+%Subsection: Softmax
+\subsection{Softmax}
 
-%------------------------------------------------
-%Subsection: MLP: Multi-Layer Perceptrons
-\subsection{MLP: Multi-Layer Perceptrons}
-
-%------------------------------------------------
-%Subsection: RBM: Restricted Boltzmann Machines
-\subsection{RBM: Restricted Boltzmann Machines}
-
-https://www.cs.toronto.edu/~hinton/absps/guideTR.pdf \\
-
-"\textbf{Restricted Boltzmann machines (RBMs)} have been used as generative models of many different types of data including labeled or unlabeled images \cite{Hinton:2006:FLA:1161603.1161605}, windows of mel-cepstral coefficients that represent speech (Mohamed et al., 2009), bags of words that represent documents (Salakhutdinov and Hinton, 2009), and user ratings of movies (Salakhutdinov et al., 2007). In their conditional form they can be used to model high-dimensional temporal sequences such as video or motion capture data (Taylor et al., 2006) or speech (Mohamed and Hinton, 2010). Their most important use is as learning modules that are composed to form deep belief nets \cite{Hinton:2006:FLA:1161603.1161605}." \\
-
-\begin{figure}[tb]
-\centering 
-\includegraphics[width=0.5\columnwidth]{Figures/BoltzmannMachines.jpg} 
-\caption[A Boltzmann Machine diagram]{An example of a generic Boltzmann Machine versus a Restricted Boltzmann Machine, from \url{http://www.frontiersin.org/files/Articles/58710/fnins-07-00178-r2/image_m/fnins-07-00178-g001.jpg}).} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
-\label{fig:BoltzmannMachines} 
-\end{figure}
-
-A general Boltzmann machine is a network with symmetric weights fully connecting all input and hidden nodes. The details of the weights and nodes are described later in this section. A restricted Boltzmann machine separates nodes into layers and has no intra-layer connections. General Boltzmann machines, while theoretically providing a more diverse architecture, are difficult to train in practice. The difference between a general Boltzmann Machine and the Restricted Boltzmann Machine is illustrated in Figure \ref{fig:BoltzmannMachines}. \\
-
-The training procedure for RBMs is more complicated than back-propagation. They typically use a procedure called constrastive divergence \cite{Hinton:2002:TPE:639729.639730}. There are several meta-parameters including learning rate, momentum, weight-cost, sparsity target, initial weights, number of hidden units, and mini-batch sizes. \\
-
-For simplicity, the outline below will consider a two-layer network consisting of the visible unit layer representing the input data and a layer of hidden units called \textbf{feature detectors}. Deep neural networks can be trained by successively stacking RBMs, with the hidden layer of the first RBM used as an input for the second. Greedy pairwise training of layers has been demonstrated to be effective in learning deep architectures (reference greedy pair training). Input data are stochastic binary pixels (or continuous variables scaled to $[0,1]$). Feature detectors are also stochastic binary units. The visible units are connected to the feature detectors using symmetrtically weighted connections. A configuration of visible and hidden units has an energy (Hopfield, 1982) given by:
+In neural networks and other machine learning algorithms, the \textbf{softmax} function is used as the final layer of a classification network. The softmax function is a generalization of the logistic function. It transforms a $K$-dimensional vector $\mathbf{z}$ of arbitrary real values into a $K$-dimensional vector $\sigma(\mathbf{z})$ of real values in the range $(0,1)$ which sum to 1. 
 
 \begin{equation}
-E(\textbf{v},\textbf{h}) = - \sum_{i} a_{i} v_{i} -\sum_{j} b_{j} h_{j} - \sum_{i}\sum_{j}v_{i}h_{i}w_{ij}
+\sigma(\mathbf{z})_{j} = \frac{e^{z_{j}}}{\sum_{k=1}^{K} e^{z_{k}}} \text{, for j=1,...,K}
 \end{equation}
 
-for $i \in visible$ and $j \in hidden$. In this equation, $v_{i}$ and $h_{j}$ are the binary states of the visible unit $i$ and hidden unit $j$, respectively. $a_{i}$ and $b_{j}$ are their biases and $w_{ij}$ is the weight between them. 
+The result of the softmax function can, for example, be used as the predicted probability for the $j^{th}$ class in a classification task.
 
-The energy can be used to define a probability of this pairing of visible and hidden units (hence the name "Boltzmann Machine":
-
-\begin{equation}
-p(\textbf{v},\textbf{h}) = \frac{1}{\mathcal{Z}} e^{-E(\textbf{v},\textbf{h})}
-\end{equation}
-
-Z is the partition function:
-
-\begin{equation}
-\mathcal{Z} = \sum_{\textbf{v},\textbf{h}} e^{-E(\textbf{v},\textbf{h})}
-\end{equation}
-
-The network assigns a probability to a visible vector $\textbf{v}$, which can be calculated by summing $p(\textbf{v},\textbf{h})$ over all possible hidden vectors:
-
-\begin{equation}
-p(\textbf{v}) = \frac{1}{\mathcal{Z}} \sum_{\textbf{h}} e^{-E(\textbf{v},\textbf{h})}
-\end{equation}
-
-A higher energy input is a less-probable input, according to the energy function. The network is trained to increase the probability (lowering the energy) assigned by the network to signal inputs while lowering the probability (increasing the energy) assigned to noise. To get the change in weights:
-
-\begin{equation}
-\frac{\delta \log p(\textbf{v})}{\delta w_{ij}} = \langle v_{i} h_{j} \rangle_{data} - \langle v_{i} h_{j} \rangle_{model}
-\end{equation}
-
-The angle brackets denote expectation values under the specified distribution (data or model). A learning rule for weights using stochastic gradient ascent on the log probability, and a learning rate $\epsilon$, is then simply:
-
-\begin{equation}
-\delta w_{ij} = \epsilon ( \langle v_{i} h_{j} \rangle_{data} - \langle v_{i} h_{j} \rangle_{model} ).
-\end{equation}
-
-Now all that remains is to get an unbiased sample of $\langle v_{i} h_{j} \rangle_{data}$ and $\langle v_{i} h_{j} \rangle_{model}$. The first one is straightforward, since there are no connections between hidden units of the same layer in an RBM. Given a randomly selected training image, $\textbf{v}$, the binary state, $h_{j}$ , of each hidden unit, j, is set to 1 with probability 
-
-\begin{equation}
-p(h_{j}=1 | \textbf{v}) = \sigma ( b_{j} + \sum_{i} v_{i} w_{ij} )
-\end{equation}
-
-% Resume in change of weights derivation
-%------------------------------------------------
-%Subsection: CNN: Convolutional Neural Networks
-\subsection{CNN: Convolutional Neural Networks}
+Softmax score probabilities get close to 0 or 1 as scores get larger. Similarly, score probabilities get closer to uniform as all scores get smaller. A classifier is less confident in a result with low scores and more confident in a result with high scores. The training of a classifier is designed to increase confidence over time. 
 
 %------------------------------------------------
-%Subsection: RNN: Recurrent Neural Networks
-\subsection{RNN: Recurrent Neural Networks}
+%Subsection: Initializing variables
+\subsection{Initializing variables}
+
+Generally, it is useful to have variables with a mean near zero and equal variance. This will help avoid numerical instability issues and ill-conditioned matrices. Remember: matrix algebra really underpins all of this stuff!
+
+Weight and bias initialization needs to be done carefully, otherwise the training of the model is inefficient. A useful method is to randomly sample from a Gaussian distribution centered at zero with a given standard deviation. The standard deviation is related to the order of magnitude of hte outputs. For a less certain initialization, it is a good idea to use a small standard deviation (much less than 0.1).
 
 %------------------------------------------------
-%Subsection: LSTM: Long Short Term Memory
-\subsection{LSTM: Long Short Term Memory}
+%Subsection: Cross-validation
+\subsection{Cross-Validation}
+
+\textbf{Cross-validation}, sometimes called rotation estimation, is a model validation technique for assessing how the results of a statistical analysis will generalize to an independent set of data. The idea is that the performance of a model needs to be measured using a dataset that is separate from the one used for training. If the same data are used for training and testing a model, the performance will be falsely inflated, since the model will have trained on some of the statistical variations in the training data. Cross-validation can prevent \textbf{over-fitting}.
+
+A simple cross-validation system involves splitting up the data into a \textbf{training}, \textbf{validation}, and \textbf{testing} dataset. 
+
+\begin{itemize}
+	\item Training set: a data sample for training the neural network via back-propagation. 
+	\item Validation set: a data sample for validating and measuring the performance.
+	\item Testing set: a data sample for preventing over-training. 
+\end{itemize}
+
+The bigger the validation set, the more precise the estimate of the model performance. The performance measurement is susceptible to statistical fluctuations, after all. More data always helps. Having a large training dataset is the most important thing. 
 
 %------------------------------------------------
-%Subsection: Auto-Encoders and Deep Belief Networks
-\subsection{Auto-Encoders and Deep Belief Networks}
+%Subsection: Loss function
+\subsection{Loss function}
+
+Machine learning is often about desigining the correct loss-function to use for model optimization. 
+
+In order to train a model, it is necessary to measure how far away the output of a model is from the desired output. One way to do this is to minimize the \textbf{cross-entropy}. Use the average cross-entropy as the loss function.
+
+Sometimes it is difficult to scale the regression model, where the loss function and gradient is computed for each example. The gradient computation, for example, typically takes 3 times as long as the loss computation.
+
+One solution, called \textbf{stochastic gradient descent}, 
 
 %------------------------------------------------
-%Subsection: Neural Turing Machines
-\subsection{Neural Turing Machines}
+%Subsection: Stochastic Gradient Descent
+\subsection{Stochastic Gradient Descent}
+
+Stochastic gradient descent (SGD) involves computing the loss for a tiny random sample of data instead of the whole dataset (between 1 and 1000 training samples each time). This method requires random sampling of the training data, otherwise it won't work. On average, the gradient will point in the right direction. But the approach requires many small steps, each of which might be partially misguided. 
+
+Stochastic gradient descent is at the core of deep learning, since it \textit{scales very well} with data and model size. Bigger data and bigger models are better, after all. However, SGD is a fast but bad optimizer, and it comes with some issues.
+
+First, in order to work properly, the input variables need to have a mean of zero and equal, small, variances. Similarly, the initial weights and biases should have a mean of zero and very small variance. 
+
+The training algorithm can also use knowledge from previous steps to know where it should be going. This method, called \textbf{momentum}, keeps a running average of the gradient direction and uses that for optimization instead of the single gradient measurement. 
+
+It is also useful to make smaller steps as the training continues. This procedure, called \textbf{learning rate decay}, lowers the learning rate over time, typically by exponential damping. 
+
+The learning rate and momentum are examples of \textbf{hyper-parameters} that can be tuned for a model. Some other hyper-parameters include the initial learning rate, the batch size for SGD, and the weight initialization. \textbf{AdaGrad} is a modification of SGD that implicitly does momentum and learning rate decay. It makes learning less sensitive to hyper-parameters, but is slightly worse than tuned SGD with momentum. 
+
+One useful suggestion: \textit{"Keep calm and lower your learning rate"}. 
+
+%------------------------------------------------
+%Subsection: Linear Models
+\subsection{Linear Models}
+
+A linear classifier creates a discriminant based on the value of a linear combination of the input features. For an input feature vector of real values, $\mathbf{x}$, the output score y is given by:
+
+\begin{equation}
+	y = f(\mathbf{w} \cdot \mathbf{x}) = f( \sum_{j} w_{j} x_{j}),
+\end{equation}
+
+In this expression, $\mathbf{w}$ is a real vector of weights and $f$ is a function that converts the dot-product of the two vectors into the desired output. $\mathbf{w}$ is a linear function mapping of $\mathbf{x}$ onto $\mathbb{R}$.
+
+Numerically, linear operations are very stable. This means that small changes to the inputs do not lead to big changes in the outputs. The derivatives are constant, so they are also quite stable. The problem is that many problems cannot be represented by a linear model. For example, addition can be modeled, but multiplication cannot be modeled. 
+
+The trick is to create a non-linear model from linear components. We want to keep our parameters inside big linear functions. After all, GPUs are designed for linear operations (e.g. matrix multiplication). And it is really useful to harness GPUs for training. 
+
+%------------------------------------------------
+%Subsection: Non-Linear Models
+\subsection{Non-Linear Models}
+
+One way to introduce non-linearities into a model is to use \textbf{rectified linear units}. A RELU returns 0 if $x<0$ and $x$ if $x \geq 0$. One advantage of RELU is that the derivative is constant.
+
+A logistic model can then be extended by inserting a RELU layer in the middle: the first layer connects the input features to the RELU, while the second layer connects the RELU to the classifier. The resulting model is nonlinear. 
+
+The first layer of the model consists of the set of weights and biases applied to the input features and passed through the RELUs. The output layer of the RELU layer is fed to the next one, but it is not observable from outside the network. Hence, it is known as a \textbf{hidden} layer. The second layer consists of the weights and biases applied to these intermediate outputs, followed by the softmax function to generate probabilities. 
+
+A network can be built by stacking simple operations on top of each other. It makes the back-propagation math, which is based on the chain rule, very simple! As a reminder, the \textbf{chain rule} states that:
+
+\begin{equation}
+	[g(f(x))]' = g'(f(x)) \cdot f'(x).
+\end{equation}
+
+Note that each block of the back-propagation takes twice the memory and twice the computation time of the forward-propagation. 
+
+

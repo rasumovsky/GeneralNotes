@@ -347,7 +347,7 @@ An \textbf{AVL} is a height-balanced binary search tree. It was the first such s
 % Subsection: Priority Queues
 \subsection{Priority Queues}
 
-\textbf{Priority queues} are a data structure where priorities are put into the object and highest priorities are removed from the object. Here are the basic priority queue operations:
+\textbf{Priority queues} are a data structure where priorities are put into the object and highest priorities are removed from the object. Priority queues are useful for sorting as well as other operations where minimum or maximum elements need to be accesssed quickly. They typically have \texttt{push} and \texttt{pop} operations with $\log(N)$ time complexity. Here are the basic priority queue operations:
 
 \indent \indent \texttt{boolean isEmpty()} \\
 \indent \indent \texttt{void insert(Comparable p);} \\
@@ -567,28 +567,31 @@ Dynamic programming is a method of solving problems. It is similar to a \textit{
 % Subsection: Data Structures in C++
 \subsection{Data Structures in C++}
 
-The following table provides a description of some basic C++ data structures. 
+This section provides notes on data structures and coding generally in C++. Table \ref{tab:cpp_structures} provides a description of some basic C++ data structures. 
 
  \begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
 Name & Description \\
 \hline
 %\texttt{array}
 %\hfill
+\texttt{deque} & The double-ended queue is a sequence container with dynamic size that can be expanded or contracted on both ends. Usually implemented as some dynamic array. Unlike vectors, deques are not guaranteed to store all elements in contiguous storage locations. Any elements can be accessed in constant time. Worse than lists when frequent internal insertions or removals are needed. \\
+\hfill \\
 \texttt{list} & Lists are sequence containers that allow constant time insertion and erase operations anywhere within the sequence, as well as iteration in both directions (doubly-linked). Similar to \texttt{forward\_list} except that \texttt{forward\_list} objects are single-linked lists, and can only be iterated forwards. They lack direct access to elements by their position, and require linear time in the distance between iterator position and target to lookup. They also consume extra memory to store linking information. \\
 \hfill \\
-\texttt{vector} & A sequence container representing array that can change in size. Use dynamically allocated array to store elements. Memory reallocations should only happen at logarithmically growing intervals of size, so that insertion at the end of a vector can be provided with amortized constant time complexity. \\
+\texttt{map} & Slower than \texttt{unordered\_map} for lookup, but faster at iterating over (ordered) elements. Often implemented as a binary search tree, with $O(\log(N))$ lookup time. Generally slower than \texttt{unordered\_map} containers at accessing individual elements by key. However, \texttt{map} allows direct iteration on subsets based on ordering. \\
 \hfill \\
-\texttt{deque} & The double-ended queue is a sequence container with dynamic size that can be expanded or contracted on both ends. Usually implemented as some dynamic array. Unlike vectors, deques are not guaranteed to store all elements in contiguous storage locations. Any elements can be accessed in constant time. Worse than lists when frequent internal insertions or removals are needed. \\
+\texttt{queue} & A FIFO data structure, where items are deposited on one end and withdrawn from the other. Generally, the \texttt{push}, \texttt{pop}, \texttt{front}, and \texttt{back} operations are done in constant time. \\
 \hfill \\
 \texttt{stack} & A LIFO structure, container adaptor. Standard container classes are \texttt{vector}, \texttt{dequeue}, \texttt{list}. \\
 \hfill \\
-\texttt{map} & Slower than \texttt{unordered\_map} for lookup, but faster at iterating over (ordered) elements. Often implemented as a binary search tree, with $O(\log(N))$ lookup time. \\
+\texttt{unordered\_map} & Implemented as a hash map in C++. Constant time lookup for the most part, amortized linear time lookup. Generally faster than regular \texttt{map} for lookup, but slower for range iteration through a subset of elements. \\
 \hfill \\
-\texttt{unordered\_map} & Implemented as a hash map in C++. Constant time lookup for the most part, amortized linear time lookup. \\
-%\texttt{} &  \\
-%\texttt{} &  \\
-%\texttt{} &  \\
+\texttt{vector} & A sequence container representing array that can change in size. Use dynamically allocated array to store elements. Memory reallocations should only happen at logarithmically growing intervals of size, so that insertion at the end of a vector can be provided with amortized constant time complexity. \\
+\hfill \\
+\label{tab:cpp_structures}
 \end{tabular} \\
+
+\subsubsection{Exceptions in C++}
 
 Concerning exceptions, C++ allows the user to use \texttt{try}, the \texttt{throw}, and \text{catch} as in Java. The difference is that in the catch clause, you list the exception \textit{type}: \\
 
@@ -598,3 +601,28 @@ Concerning exceptions, C++ allows the user to use \texttt{try}, the \texttt{thro
 \indent \indent \texttt{cout $<<$ "An exception occurred, no. " $<<$ e $<<$ endl;} \\
 \indent \texttt{\}} \\
 
+\subsubsection{The \texttt{const} keyword in C++}
+
+The \texttt{const} keyword in C++ is used to specify that an object's state is constant (as opposed to \texttt{volatile} or \texttt{mutable}. Objects whose type is const-qualified cannot be modified. Direct violations usually result in compile time errors.
+
+The \texttt{const} keyword usually references the type to its \textit{left}. The exception is when \texttt{const} is all the way to the left in a declaration, in which case it applies to the first part of the type. Some examples and their meaning are listed below. The meaning is clear if the definitions are \textit{read in reverse}.
+
+\begin{itemize}
+	\item \textbf{\texttt{const int x}} - Same as \texttt{int const x}. Stores a constant integer value.
+	\item \textbf{\texttt{int const * x}} - A pointer to a constant integer.
+	\item \textbf{\texttt{const int * x}} - Equivalent to \texttt{int const * x}.
+	\item \textbf{\texttt{int * const x}} - A constant pointer to an integer.
+\end{itemize}
+
+\subsubsection{Increment and decrement operators in C++}
+
+Given an incrementable object, say \texttt{int x}, there are two ways to increment: \texttt{x++} and \texttt{++x}. What is the difference?
+
+It turns out that \texttt{x++} makes a copy of the underlying object in memory, while \texttt{++x} does not. For simply incrementing, this might not matter. However, the return value for the operation will be different, as shown in the example below. \\
+
+\indent \indent \texttt{int x = 5;} \\
+\indent \indent \texttt{int y = x++;} \\
+\indent \indent \texttt{x = 5;} \\
+\indent \indent \texttt{int z = ++x;} \\
+
+It turns out that y = 5, whereas z = 6!
