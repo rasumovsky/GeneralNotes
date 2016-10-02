@@ -99,12 +99,95 @@ A logistic model can then be extended by inserting a RELU layer in the middle: t
 
 The first layer of the model consists of the set of weights and biases applied to the input features and passed through the RELUs. The output layer of the RELU layer is fed to the next one, but it is not observable from outside the network. Hence, it is known as a \textbf{hidden} layer. The second layer consists of the weights and biases applied to these intermediate outputs, followed by the softmax function to generate probabilities. 
 
-A network can be built by stacking simple operations on top of each other. It makes the back-propagation math, which is based on the chain rule, very simple! As a reminder, the \textbf{chain rule} states that:
+A network can be built by stacking simple operations on top of each other. It makes the back-propagation math, which is based on the chain rule, very simple! 
+
+%------------------------------------------------
+%Subsection: Back-Propagation:
+\subsection{Back-Propagation}
+
+\textbf{Back-propagation} is the mechanism for using differences between the desired and actual model output to update the model parameters and improve the prediction. Basically, the loss function is used to compute a gradient for each model parameter using the chain rule. The model parameters (weights and biases) are then updated. As a reminder, the \textbf{chain rule} states that:
 
 \begin{equation}
 	[g(f(x))]' = g'(f(x)) \cdot f'(x).
 \end{equation}
 
 Note that each block of the back-propagation takes twice the memory and twice the computation time of the forward-propagation. 
+
+%------------------------------------------------
+%Subsection: Deep Models
+\subsection{Deep Models}
+
+The accuracy of a model can improved by adding more parameters to the model. This could be done by increasing the size of each layer of the model, but this turns out to be inefficient. Increasing the number of nodes per layer makes the network harder to train. A better approach is to make the model deeper by adding more layers. It is more efficient in terms of the number of parameters; you can get more performance with fewer parameters by going deeper rather than wider. Furthermore, deep models capture data with hierarchical structures better. Deeper layers are able to learn more abstract features of the data. 
+
+However, deep models only shine if you have enough data to train them. But it is hard to optimize a network that is the right size. So it is often easier to train a big network and then try to prevent over-fitting. This is sometimes called the "skinny jeans" problem. Skinny jeans look great, but it is hard to fit in them. So it is usually easier to wear jeans that are just a bit too big. 
+
+%------------------------------------------------
+%Subsection: Preventing Over-Fitting
+\subsection{Preventing Over-Fitting}
+
+One way to prevent over-fitting is \textbf{early termination}. During training, keep track of the validation set performance versus training time. As soon as improvement stops being made on the validation set performance, terminate the training. 
+
+Another way to prevent overfitting is through \textbf{regularization}. With regularization, artificial constraints are applied to the network that implicitly reduce the number of free parameters while not making it more difficult to optimize. 
+
+\textbf{L2 regularization} adds a new term to the loss function that penalizes large weights. The new term is just the sum of the square of the weights multiplied by a new hyperparameter constant $c$: 
+
+\begin{equation}
+	Loss' = Loss + \frac{c}{2} (w_{1}^{2} + w_{2}^{2} + ... + w_{M}^{2}).
+\end{equation}
+
+L2 regularization is a simple technique that does not change the structure of the network. Furthermore, the derivative of teh L2 norm of the vector is just the weights:
+
+\begin{equation}
+	W = w_{1} + w_{2} + ... + w_{M}.
+\end{equation}
+
+Perhaps the most important recent technique is called \textbf{dropout}, which randomly sets some of the activations in the neural net to zero during each training. Activations are the values that connect one layer to another. Dropout forces the neural network to learn redundant internal representations of the data. It sounds inefficient, but it prevents overfitting and makes the model more robust. Essentially, the network becomes a consensus of many networks. If dropout doesn't help, the network probably needs to be larger. 
+
+Of course, the randomness of dropout is undesirable when evaluating a network that has been trained with dropout. You don't want randomness to affect the prediction. The network is written to take the consensus of all the evaluations during evaluation. This is done by scaling the non-zero outputs during training by a factor of $c$ for a dropout rate of $\frac{1}{c}$, for example. 
+
+%------------------------------------------------
+%Subsection: Models for Structured Data
+\subsection{Models for Structured Data}
+
+Simple deep neural networks are great, but the performance of deep models can be improved if the data are structured like an image or sequence. If the data have a structure, you can simplify the model training by building that structure into the neural network to begin with. 
+
+One concept that is important when considering structures in data is \textbf{statistical invariance}. As an example, consider a model that is designed to look for cats in photographs. It doesn't matter \textit{where} the cat appears in the photo, just that the cat appears somewhere. In this position, we want our neural network to have translational invariance (different position, same kitteh). \textbf{Statistical invariants} are things that don't change on average across time and or space. 
+
+The search for statistical invariants will lead to \textbf{convolutional neural networks} for images and \textbf{embeddings} and \textbf{recurrent neural networks} for text and speech. 
+
+%------------------------------------------------
+%Subsection: Convolutional Neural Networks
+\subsection{Convolutional Neural Networks} 
+
+\textbf{Convolutional neural networks} (CNNs, or convnets) share their parameters across space. Images have height, width, and depth (color), and nearby patches of images are related. 
+
+Imagine running a patch of an image and running a neural network on it. Then slide the NN across the image, patch by patch, without changing the weights. The output that the neural network will have produced is also an image, just one with a different width, heigh, and depth!
+
+In a convolutional neural network, we have stacks of convolutions. The convolutions will form a pyramid, with the original image at the bottom. The original image is large spatially but relatively shallow. The successive convolutional layers will squeeze the image but also make it deeper. A classifier can be placed at the top of the pyramid. After all of the squeezing and deepening, only features corresponding to the classification task should remain. Depth in the network correponds approximately to \textit{semantic representation}.
+
+Below are some definitions for convnets. 
+
+\begin{itemize}
+	\item \textbf{Kernel}: a patch of a convnet. 
+	\item \textbf{Feature map}: each "pancake" in the stack of convnets. 
+	\item \textbf{Stride}: the number of pixels moved each time the filter is shifted. 
+	\item \textbf{Padding}: the technique for dealing with the edges of images.
+\end{itemize}
+
+\textbf{Valid padding} is where the convnet never goes past the edge of the image. As a result, the output image is necessarily smaller than the input image. \textbf{Same padding} allows patches to go off the edges of the image. The missing inputs are simply padded with zeros. It is called same padding because the output size is the same as the input size, assuming a stride of 1. 
+
+A few things can be done to improve the CNN architecture. \textbf{Pooling} is a better way to reduce the spatial extent of the features map in the convnet pyramid. As mentioned before, large strides (large pixel shifts between kernels) are a very aggressive way of down-sizing the image. The pooling method is less aggressive: small strides are used, but the convolutions in a neighborhood are combined. \textbf{Max-pooling} uses the maximum output from a neighborhood of outputs. One advantages to max-pooling is that it does not add to the number of model parameters. However, it still has a small stride and is expensive to compute. It also adds to the number of hyper-parameters: pooling size and pooling stride must be tuned. 
+
+A typical network has the following structure: 
+
+\begin{equation}
+	\text{image} \rightarrow \text{conv.} \rightarrow \text{max-pool} \rightarrow \text{conv.} \rightarrow \text{max-pool} \rightarrow \text{fully-conn.} \rightarrow \text{classifier}.
+\end{equation}
+
+There are other examples of pooling, such as \textbf{average-pooling}, which takes the average value in a neighborhood instead of a max value. It is similar to providing a blurred view. 
+
+Another improvement to the CNN architecture comes from \textbf{$1\times1$ convolutions}. Why would we want to do a $1\times1$ convolution? They just look at 1 pixel and not a patch, after all. The reason is that, if you add a $1\times1$ convolution into the middle of the network, you have a mini-deep network over the patch instead of a linear classifier. So it is an \textit{inexpensive} way to make models deeper with more parameters without changing their structure. $1\times1$ are really just matrix multiplications and not convolutions. 
+
+A third way to improve the CNN architecture is via the \textbf{inception module}. At each layer of the convnet, we have many options when it comes to pooling or convolution. All of these are beneificial and provide modeling power, so why choose between them? We can just use all of the operations and concatenate the output. The combined output of average pooling, $1\times1$, $3\times3$ , and $5\times5$ convolutions, etc. often performs better than a simple convolution.
 
 
