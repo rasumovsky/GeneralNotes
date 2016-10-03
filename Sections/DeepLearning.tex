@@ -181,8 +181,9 @@ A few things can be done to improve the CNN architecture. \textbf{Pooling} is a 
 A typical network has the following structure: 
 
 \begin{equation}
-	\text{image} \rightarrow \text{conv.} \rightarrow \text{max-pool} \rightarrow \text{conv.} \rightarrow \text{max-pool} \rightarrow \text{fully-conn.} \rightarrow \text{classifier}.
+	\text{image} \rightarrow \text{conv.} \rightarrow \text{pool} \rightarrow \text{conv.} \rightarrow \text{pool} \rightarrow \text{fully-conn.} \rightarrow \text{classifier}.
 \end{equation}
+\\
 
 There are other examples of pooling, such as \textbf{average-pooling}, which takes the average value in a neighborhood instead of a max value. It is similar to providing a blurred view. 
 
@@ -190,4 +191,73 @@ Another improvement to the CNN architecture comes from \textbf{$1\times1$ convol
 
 A third way to improve the CNN architecture is via the \textbf{inception module}. At each layer of the convnet, we have many options when it comes to pooling or convolution. All of these are beneificial and provide modeling power, so why choose between them? We can just use all of the operations and concatenate the output. The combined output of average pooling, $1\times1$, $3\times3$ , and $5\times5$ convolutions, etc. often performs better than a simple convolution.
 
+%------------------------------------------------
+%Subsection: Text in a deep model
+\subsection{Text in a deep model} 
+
+How do you classify a document? You can start by having a look at the words in the document. But words are difficult. There are many words, and it is often the most rare words that are the most important. Rare events are a problem for deep learning, which relies on the availability of numerous trainging examples. 
+
+Another problem that text presents: we often use different words to mean the same thing. Cat and kitty, for instance, are often interchangeable. We have to train a model that know that kitty and cat are related. We would like to see important words often enough so that we can learn their meanings automatically and see relationships so that we can share parameters between them. 
+
+The most straightforward approach involves \textbf{unsupervised learning}, or providing training data without labels. It is easy to find text for training on the web or wikipedia, if you can figure out what to learn from it. 
+
+One very powerful idea for training is that \textit{similar words tend to occur in similar contexts}. A model can be built to use words to predict word context. Such a model would have to treat cat and kitty similarly, for instance. And you don't even have to know what individual words mean -- word meanings can be inferred directly from the company they keep. 
+
+To do this, map words to small vectors called \textit{embeddings}. Embedding vectors will be close to each other when words have similar meanings and will be far apart when they have different meanings. Embeddings solve some of the problem with sparsity. Once you have embedded a word into a small vector, you have a word representation where all cat-like things are represented by vectors that are very similar. As a result, the model doesn't have to learn new things for every way of talking about a cat. It can generalize from patterns of cat-like things. 
+
+\textbf{Word2Vec} is a simple and effective way to learn embeddings. Each word of a sentence is mapped to an (initially random) embedding vector. Then the embedding is used to predict the context of the word, where the context is just nearby words. Then the model is trained as if it were a supervised learner. A logistic classifier is used to predict nearby words. 
+
+It would be useful to take a look at the model and see which embeddings are grouped closely together. One option would be to do nearest neighbor lookup for any given word. Or you could reduce the dimensionality of the embedding to 2 dimensions for representation with a principal component analysis (PCA). But much of the useful information is lost in such a compression, so the result is usually not great. \textbf{tSNE} is a visualization technique for embeddings. It provides a way of projecting the embedding that preserves the neighborhood structure. 
+
+For training embeddings, it is also often useful to measure the closeness of two vectors using $\cos()$ and not $L2$. This is because the length of the embedding vector is not nearly as relevant to the classification as direction. In fact, it is often better to normalize all embedding vectors to have unit norm. 
+
+\begin{itemize}
+	\item $L2 = ||V_{cat} - V_{kitten}||_{2}^{2}$
+	\item $\cos() = \frac{(V_{cat} \cdot V_{kitten})}{||V_{cat}|| ||V_{kitten}||}$
+\end{itemize}
+
+Here's how to make an actual model for Word2Vec. Starting with a word, say "cat", embed the word into a small vector $V_{cat}$. Then feed $V_{cat}$ into a simple linear model with weights and biases. That model will output a softmax probability that can be compared to the target, which is another word in the context of the input word. 
+
+The problem is that there are many words in our vocabulary, and computing the softmax over all the words is difficult. One remedy to this is to \textit{randomly sample} the targets. This is called \textbf{sampled softmax}. 
+
+One interesting feature of embeddings is that analogies can be expressed in terms of vector operations. An example of a semantic analogy would be "\textit{puppy - dog + cat = kitty}". An example of a syntactic analogy would be \textit{taller - tall + short = shorter}. 
+
+There are two ways to train an embedding. The \textbf{skip-gram} model uses a word to predict a context. \textbf{CBOW}, or continuous bag of words, uses context to predict words. The two approaches are essentially mirror images of each other. 
+
+
+%------------------------------------------------
+%Subsection: Recurrent Neural Networks
+\subsection{Recurrent Neural Networks} 
+
+Of course, there are many way sto learn embeddings. One question: what to do with input sequences of varying lengths? 
+
+\textbf{Recurrent neural networks} use shared parameters across time to extract patterns, and are great for dealing with input sequences. They are similar to convolutional networks, in that they share parameters across some dimension. It's just that CNNs share parameters across \textit{space}, while RNNs share parameters across \textit{time}. 
+
+Imagine a sequence of events. At each point in time, we want the model to make a decision about what has happened so far in the sequence. We want to take into account the past. One option is to use the state of the previous classifier as a summary of the past.
+
+The idea is to use two classifiers: a single model connected to the summary of the past inputs, and a model connected to the inputs from the current step. The network thus has a simple repeating pattern. 
+
+Back-propagation is difficult to do through time, though. The architecture is bad for stochastic gradient descent, since the parameters are correlated. As a result, gradients explode or vanish. Exploding gradients can be handled by a procedure called \textbf{gradient clipping}. The idea is to compute the norm and shrink the step when the norm grows too big. It acts as a cheap and effective cap on gradients. 
+
+Vanishing gradients are a bigger problem. Practically, vanishing gradients are equivalent to memory loss, where the model quickly forgets its summary of past events. The solution to the problem came from a breakthrough called \textbf{LSTM}, or \textbf{long short-term memory}. In the basic recurrent model, a summary of the past $M$ as well as current inputs $X$ are fed into a weight module that produces a prediction $Y$ as well as a summary for the future, $M'$. With LSTM, the weight module is replaced by a LSTM cell. It is still functionally a neural network.
+
+To describe the LSTM, let's first create a simple memory model. \\
+
+\begin{tabular}{p{0.25\textwidth}p{0.25\textwidth}p{0.25\textwidth}}
+Instruction & Input & Output \\
+\hline
+Write & X & M \\
+Read & M & Y \\
+Forget & M & \\
+\end{tabular} \\
+
+Each logic gate can be thought of as a multiplication by 1 or 0. But what if continuous decisions were made at each gate instead, with values between 0 and 1? This would give us a continuous, differentiable, back-prop-able memory model! You can perform a logistic regression of gate values. The gates help the model keep memory longer when needed and forget memory when not needed. 
+
+Regularization techniques are needed for LSTM as with other neural networks. L2 regularization works. So does dropout, as long as you use it on the input or the output but not on the recurrent connections. 
+
+\subsubsection{Prediction with recurrent neural networks}
+
+A model that predicts the next item of a sequence can also be used to \textit{generate} a sequence. This can be done by aternating predictions with samplings to build a sequence. A more sophisticated generative method is to sample multiple times at every step. Then you have multiple sequences (a.k.a. multiple hypotheses) with which you can continue predicting at each step. By looking at the total probability of multiple time steps at a time, you prevent the sampling from accidentally making one bad choice and being stuck with it for the rest of the time sequence. 
+
+One way of doing this is \textbf{beam search}, where only a few of the most likely sequences are kept at each step. This approach works well for generating sequences. It also prevents the number of hypotheses from growing exponentially. 
 
