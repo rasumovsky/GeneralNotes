@@ -182,11 +182,6 @@ At runtime, a stack of activation records (AR) is maintained (one for each activ
 
 A data structure is recursive if it can be defined in terms of itself. 
 
-%------------------------------------------------
-% Subsection: Searching
-\subsection{Searching in an Array}
-
-There are two basic approaches to searching in an array: \textbf{sequential} search and \textbf{binary} search. Sequential search involves looking at each value in turn. It is faster for sorted arrays $O(N)$. Binary search (for sorted array) involves looking at the middle item, comparing with the value of interest, then eliminating half of the array from the search $O(\log(N))$. 
 
 %------------------------------------------------
 % Subsection: Tree Structure
@@ -195,7 +190,6 @@ There are two basic approaches to searching in an array: \textbf{sequential} sea
 So far, the structures discussed have been \textbf{linear data structures}. These incude lists, stacks, queues, and other structures in which items are stored with one item following another. \textbf{Trees} are an example of a \textbf{nonlinear data structure}. More than one item can follow from a single item. Furthermore, the number of following items can vary from one item to another. Trees are useful because they can provide \textit{fast access} to information in a database. 
 
 Some tree terminology is provided in the table below. \\
-
 
 \begin{tabular}{p{0.3\textwidth}p{0.7\textwidth}}
 \textbf{Node} & A single element of the tree \\
@@ -458,137 +452,43 @@ A \textbf{breadth-first search}, or BFS, is a method for searching through the n
 Breadth-first search is similar to the \textit{level-order} traversal of the tree structure. It can be used to find the shortest path between points. \textit{Djikstra's algorithm} is an example of this. It finds the shortest path through a weighted non-negative graph and has complexity $O(E \log(N))$.
 
 %------------------------------------------------
-% Subsection: Sorting
-\subsection{Sorting}
-
-\textbf{Sorting} involves putting the values of an array into some order. \textbf{comparison sorts} work by comparing values. Simple algorithms are $O(N^{2})$, though the best-possible performance is $O(N\log(N))$. \\
-
-\begin{tabular}{p{0.3\textwidth}p{0.5\textwidth}}
-Name & Complexity \\
-\hline
-selection sort & w.c. $O(N^{2})$ \\
-insertion sort & w.c. $O(N^{2})$ \\
-merge sort & w.c. $O(N \log(N))$ \\
-quicksort & w.c. $O(N^{2})$, average $O(N \log(N))$ \\
-\end{tabular} \\
-
-\textbf{Stable sorting} algorithms also preseve the relative ordering for duplicate keys from the previous sorting. 
-
-\subsubsection{Selection Sort}
-
-\textbf{Selection sort} is an $O(N^{2})$ complexity sorting algorithm. The basic approach is to find the smallest value in an array \texttt{A} and then put it in \texttt{A[0]}. Then find the $n^{th}$ smallest value in \texttt{A} and put it in \texttt{A[n-1]}.
-
-\begin{itemize}
-	\item Use outer loop from \texttt{0} to \texttt{n-1}, letting \texttt{k} represent the index.
-	\item Use a nested loop from \texttt{k+1} to \texttt{n-1} to find index of smallest value.
-	\item Swap that value with \texttt{A[k]}. 
-	\item After $i^{th}$ iteration, \texttt{A[0]} through \texttt{A[i-1]} are ordered.
-\end{itemize}
-
-Complexity = $(N-1) + (N-2) + ... + 1 + 0 = O(N^{2})$.
-
-\subsubsection{Insertion Sort}
-
-\textbf{Insertion sort} is another $O(N^{2})$ complexity sorting algorithm. The basic approach is to put the first two items in correct relative order. Then insert the $3^{rd}$ item in the correct place relative to the first two. Then insert the $n^{th}$ item in the correct place relative to the previous $n-1$. 
-
-\begin{itemize}
-	\item Use outer loop from \texttt{k=1} to \texttt{k=n-1}.
-	\item Use inner loop from \texttt{j=k-1} to \texttt{0} \textit{as long as \texttt{A[j] > A[k]}}. 
-	\item Each time, shift higher numbers up (\texttt{A[j+1]=A[j]}) to make space for eventual insertion. 
-	\item Insert \texttt{A[k]} into final \texttt{A[j]}. 
-	\item After the $i^{th}$ iteration, \texttt{A[0]} through \texttt{A[i-1]} are relatively ordered but are not in the final position. 
-\end{itemize}
-
-\subsubsection{Merge Sort}
-
-\textbf{Merge sort} is an $O(N \log(N))$ \textit{divide and conquer} algorithm. It takes advantage of the fact that it is possible to merge two sorted arrays, each containing $N/2$ items, in $O(N)$ time. It works by simultaneously stepping through the two arrays and always choosing the smaller value to put in the final array. 
-
-\begin{itemize}
-	\item Divide the array into two halves.
-	\item Recursively sort the left half. 
-	\item Recursively sort the right half. 
-	\item Merge the two sorted halves (requires temporary auxiliary array). 
-\end{itemize}
-
-\subsubsection{Quick Sort}
-
-\textbf{Quick sort} is another on average $O(N \log(N)$ divide and conquer sorting algorithm. Compared with merge sort, it does more work during the "divide" part in order to avoid work in the "combine" part. The idea is to start by \textit{partitioning} the array using some \textit{median} value (or \textit{pivo} value). Then use 2 pointers at opposite ends of the array to perform swaps of values. 
-
-\begin{itemize}
-	\item Choose a pivot value -- put pivot at end of array (swap with existing).
-	\item Partition the array. Put all entries less than pivot in the left part and all entries greater than the pivot in the right part, with the pivot in the middle. 
-	\item Recursively, sort the values less than or equal to the pivot. 
-	\item Recursively, sort the values greater than or equal to the pivot. 
-\end{itemize}
-
-Note: a poorly chosen pivot can lead to $O(N^{2})$ complexity. The \textbf{median of three} technique can be useful for choosing a pivot: pick median value from sampling beginning, middle, and end of array. Upper value placed at end of array, median placed next to end, low value placed at beginning of array. 
-
-Note that the quick sort algorithm does not require extra storage space, unlike the merge sort algorithm. 
-
-\subsubsection{Heap Sort}
-
-\textbf{Heap sort} is an $O(N \log(N))$ complexity sorting algorithm. The idea is to insert each item into an initially empty heap. Then fill the array right-to-left as follows: while the heap is not empty, do one \texttt{removeMax} operation and put the returned value into the next position of the array. 
-
-\subsubsection{Radix Sort}
-
-\textbf{Radix sort} is not a comparison sort. It is useful on sequences of \textit{comparable} values, like sequences of characters or numbers. The time is $O((N + R)*L)$, where $N$ is the number of sequences, $R$ is the range of values ieach item could have, $L$ is the maximum length of the sequences. The approach uses an array of queues. 
-
-\begin{itemize}
-	\item Process each sequence right-to-left (least to most significant digit).
-	\item Each pass, values taken from original array and stored in a queue in the auxiliary array based on the value of the current digit. Note: the auxiliary array has length $L$, and the queues at each array position handle duplicates etx. 
-	\item Queues are dequeued back into the original array, ready for next pass.
-\end{itemize}
-
-The queue structure preserves previous ordering. It is often \textit{better} than $O(N \log(N))$. 
-
-\subsubsection{Bubble Sort}
-
-\textbf{Bubble sort} is a sorting algorithm of complexity $O(N^{2})$. Each pass through the unsorted part "bubbles" the next smallest item from unsorted to the back of the sorted part. 
-
-\begin{itemize}
-%	\item loop \texttt{(i=0; i<array_length-1):}
-%	\item loop \texttt{(j<array_length-1, j>i):}
-	\item swap \texttt{A[j]} with \texttt{A[j-1]} if it is smaller, so that small values bubble all the way down. 
-\end{itemize}
-
-%------------------------------------------------
-% Subsection: Caching
-\subsection{Cache Algorithms}
-
-\textbf{Cache algorithms} are instructions that a computer can follow in order to maintain a cache of stored information. A \textbf{cache} is just a data storage system that can serve up data faster. When the cache is full, the algorithm must decide which item to discard in order to make room for the new item. A few examples of caching algorithms are LRU, MRU, and RR. The \textbf{least recently used} (LRU) algorithm discards the least recently used item in the cache when making space. The \textbf{most recently used} (MRU) algorithm discards the most-recently used item in the cache to make space. The \textbf{random replacement} (RR) just randomly selects a candidate item to discard. 
-
-%------------------------------------------------
-% Subsection: Dynamic Programming
-\subsection{Dynamic Programming}
-
-Dynamic programming is a method of solving problems. It is similar to a \textit{divide and conquer} strategy, in that a large problem is solved by breaking it down into similar, smaller problems of the same type. However, dynamic programming is typically used with polynomial complexity in scenarios where straightforward divide and conquer or recursion would require exponential complexity.
-
-%------------------------------------------------
 % Subsection: Data Structures in C++
 \subsection{Data Structures in C++}
 
-This section provides notes on data structures and coding generally in C++. Table \ref{tab:cpp_structures} provides a description of some basic C++ data structures. 
+This section provides notes on data structures and coding generally in C++. A list of primitive types in C++ is given below. Also, table \ref{tab:cpp_structures} provides a description of some basic C++ data structures. 
 
- \begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
-Name & Description \\
-\hline
-%\texttt{array}
-%\hfill
-\texttt{deque} & The double-ended queue is a sequence container with dynamic size that can be expanded or contracted on both ends. Usually implemented as some dynamic array. Unlike vectors, deques are not guaranteed to store all elements in contiguous storage locations. Any elements can be accessed in constant time. Worse than lists when frequent internal insertions or removals are needed. \\
-\hfill \\
-\texttt{list} & Lists are sequence containers that allow constant time insertion and erase operations anywhere within the sequence, as well as iteration in both directions (doubly-linked). Similar to \texttt{forward\_list} except that \texttt{forward\_list} objects are single-linked lists, and can only be iterated forwards. They lack direct access to elements by their position, and require linear time in the distance between iterator position and target to lookup. They also consume extra memory to store linking information. \\
-\hfill \\
-\texttt{map} & Slower than \texttt{unordered\_map} for lookup, but faster at iterating over (ordered) elements. Often implemented as a binary search tree, with $O(\log(N))$ lookup time. Generally slower than \texttt{unordered\_map} containers at accessing individual elements by key. However, \texttt{map} allows direct iteration on subsets based on ordering. \\
-\hfill \\
-\texttt{queue} & A FIFO data structure, where items are deposited on one end and withdrawn from the other. Generally, the \texttt{push}, \texttt{pop}, \texttt{front}, and \texttt{back} operations are done in constant time. \\
-\hfill \\
-\texttt{stack} & A LIFO structure, container adaptor. Standard container classes are \texttt{vector}, \texttt{dequeue}, \texttt{list}. \\
-\hfill \\
-\texttt{unordered\_map} & Implemented as a hash map in C++. Constant time lookup for the most part, amortized linear time lookup. Generally faster than regular \texttt{map} for lookup, but slower for range iteration through a subset of elements. \\
-\hfill \\
-\texttt{vector} & A sequence container representing array that can change in size. Use dynamically allocated array to store elements. Memory reallocations should only happen at logarithmically growing intervals of size, so that insertion at the end of a vector can be provided with amortized constant time complexity. \\
-\hfill \\
-\label{tab:cpp_structures}
+\begin{itemize}
+	\item \texttt{bool} - a boolean (1 bit)
+	\item \texttt{char} - a character (1 byte)
+	\item \texttt{int} - an integer (4 bytes)
+	\item \texttt{float} - a floating point number (4 bytes)
+	\item \texttt{double} - a double floating point number (8 bytes)
+	\item \texttt{void} - a valueless type
+	\item \texttt{wchar\_t} - a wide character (2-4 bytes)
+\end{itemize}
+
+The basic primitive types can be modified using one or more of the type modifiers: \texttt{signed}, \texttt{unsigned}, \texttt{short}, \texttt{long}. When a \texttt{char} or \texttt{int} is \texttt{unsigned}, the maximum value is doubled, but the possibility for negative values is removed. The bit size is unchanged. Using \texttt{short} reduces the number of bits by a factor of 2 (short int is 2 bytes, whereas int is 4 bytes). Using \texttt{long} increases the number of bits by a factor of 2 (long int is 8 bytes). 
+
+\begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
+	Name & Description \\
+	\hline
+	%\texttt{array}
+	%\hfill
+	\texttt{deque} & The double-ended queue is a sequence container with dynamic size that can be expanded or contracted on both ends. Usually implemented as some dynamic array. Unlike vectors, deques are not guaranteed to store all elements in contiguous storage locations. Any elements can be accessed in constant time. Worse than lists when frequent internal insertions or removals are needed. \\
+	\hfill \\
+	\texttt{list} & Lists are sequence containers that allow constant time insertion and erase operations anywhere within the sequence, as well as iteration in both directions (doubly-linked). Similar to \texttt{forward\_list} except that \texttt{forward\_list} objects are single-linked lists, and can only be iterated forwards. They lack direct access to elements by their position, and require linear time in the distance between iterator position and target to lookup. They also consume extra memory to store linking information. \\
+	\hfill \\
+	\texttt{map} & Slower than \texttt{unordered\_map} for lookup, but faster at iterating over (ordered) elements. Often implemented as a binary search tree, with $O(\log(N))$ lookup time. Generally slower than \texttt{unordered\_map} containers at accessing individual elements by key. However, \texttt{map} allows direct iteration on subsets based on ordering. \\
+	\hfill \\
+	\texttt{queue} & A FIFO data structure, where items are deposited on one end and withdrawn from the other. Generally, the \texttt{push}, \texttt{pop}, \texttt{front}, and \texttt{back} operations are done in constant time. \\
+	\hfill \\
+	\texttt{stack} & A LIFO structure, container adaptor. Standard container classes are \texttt{vector}, \texttt{dequeue}, \texttt{list}. \\
+	\hfill \\
+	\texttt{unordered\_map} & Implemented as a hash map in C++. Constant time lookup for the most part, amortized linear time lookup. Generally faster than regular \texttt{map} for lookup, but slower for range iteration through a subset of elements. \\
+	\hfill \\
+	\texttt{vector} & A sequence container representing array that can change in size. Use dynamically allocated array to store elements. Memory reallocations should only happen at logarithmically growing intervals of size, so that insertion at the end of a vector can be provided with amortized constant time complexity. \\
+	\hfill \\
+	\label{tab:cpp_structures}
 \end{tabular} \\
 
 \subsubsection{Exceptions in C++}

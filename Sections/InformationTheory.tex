@@ -17,6 +17,8 @@ double & 64 & 1 sign, 11 exponent, 53 significand precision \\
 \label{table:datatypes}
 \end{tabular}
 
+%------------------------------------------------
+% Subsection: Entropy
 \subsection{Entropy}
 
 Shannon entroy H - the average number of bits per symbol needed to store or communicate a message. "Bits assumes $\log_{2}$. "It is analogous to intensive physical entropies like molar and specific entropy $S_{0}$ but not extensive physical entropy $S$."
@@ -45,3 +47,31 @@ entropy per particle & entropy per symbol \\
 probability of a microstate & probability of a symbol \\
 Extensive physical entropy $S$ & Entropy of file or msssage $HN$ \\
 \end{tabular}
+
+%------------------------------------------------
+% Subsection: Numerical Systems
+\subsection{Numerical Systems}
+
+We usually count in base 10 (maybe because we have 10 fingers and 10 toes?). But there are other counting systems available. For instance, computers are programmed with binary instructions because transistors can have "on" or "off" gate positions. Binary, octal, decimal, and hexadecimal are all examples of \textbf{positional numerical systems}. The \textbf{radix} refers to the number of symbols that can be used at each position in a number. For the decimal system, the radix is 10 because each decimal place can accomodate the numbers 0-9. The radix is 2 for binary, because each position can accomodate the numbers 0 or 1. For hexadecimal, it is 16 (0-9, as well as A-F). And so on... 
+
+The equation below shows how to convert a hexadecimal (base 16) number into a decimal (base-10) number. 
+
+\begin{equation}
+	\begin{split}
+	2 A F 3 & = (2_{16} \cdot 16^{3}) + (A_{16} \cdot 16^{2}) + (F_{16} \cdot 16^{1}) + (3_{16} \cdot 16^{0}) \\
+	& = (2 \cdot 16^{3}) + (10 \cdot 16^{2}) + (15 \cdot 16^{1}) + (3 \cdot 16^{0}) \\
+	& = 10995
+	\end{split}
+\end{equation}
+
+Here's another example for converting from a decimal base to a binary base.
+
+\begin{equation}
+	\begin{split}
+	1035 & = (1_{10} \cdot 10^{3}) + (0_{10} \cdot 10^{2}) + (3_{10} \cdot 10^{1}) + (5_{10} \cdot 10^{0}) \\
+	& = (1 \cdot 2^{10}) + (1 \cdot 2^{3}) + (1 \cdot 2^{1}) + (1 \cdot 2^{0}) \\
+	& = 10000001011
+	\end{split}
+\end{equation}
+
+

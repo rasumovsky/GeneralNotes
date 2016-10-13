@@ -1,0 +1,157 @@
+%----------------------------------------------------------------------------------------
+%	Algorithms
+%----------------------------------------------------------------------------------------
+\section{Algorithms}
+
+%------------------------------------------------
+% Subsection: Caching
+\subsection{Cache Algorithms}
+
+\textbf{Cache algorithms} are instructions that a computer can follow in order to maintain a cache of stored information. A \textbf{cache} is just a data storage system that can serve up data faster. When the cache is full, the algorithm must decide which item to discard in order to make room for the new item. A few examples of caching algorithms are LRU, MRU, and RR. The \textbf{least recently used} (LRU) algorithm discards the least recently used item in the cache when making space. The \textbf{most recently used} (MRU) algorithm discards the most-recently used item in the cache to make space. The \textbf{random replacement} (RR) just randomly selects a candidate item to discard. 
+
+%------------------------------------------------
+% Subsection: Dynamic Programming
+\subsection{Dynamic Programming}
+
+Dynamic programming is a method of solving problems. It is similar to a \textit{divide and conquer} strategy, in that a large problem is solved by breaking it down into similar, smaller problems of the same type. However, dynamic programming is typically used with polynomial complexity in scenarios where straightforward divide and conquer or recursion would require exponential complexity.
+
+%------------------------------------------------
+% Subsection: Sorting Algorithms
+\subsection{Sorting Algorithms}
+
+\textbf{Sorting} involves putting the values of an array into some order. \textbf{comparison sorts} work by comparing values. Simple algorithms are $O(N^{2})$, though the best-possible performance is $O(N\log(N))$. \\
+
+\begin{tabular}{p{0.3\textwidth}p{0.5\textwidth}}
+Name & Complexity \\
+\hline
+selection sort & w.c. $O(N^{2})$ \\
+insertion sort & w.c. $O(N^{2})$ \\
+merge sort & w.c. $O(N \log(N))$ \\
+quick sort & w.c. $O(N^{2})$, average $O(N \log(N))$ \\
+heap sort & $O(N \log(N))$ \\
+\end{tabular} \\
+
+\textbf{Stable sorting} algorithms also preseve the relative ordering for duplicate keys from the previous sorting. 
+
+\subsubsection{Selection Sort}
+
+\textbf{Selection sort} is an $O(N^{2})$ complexity sorting algorithm. The basic approach is to find the smallest value in an array \texttt{A} and then put it in \texttt{A[0]}. Then find the $n^{th}$ smallest value in \texttt{A} and put it in \texttt{A[n-1]}.
+
+\begin{itemize}
+	\item Use outer loop from \texttt{0} to \texttt{n-1}, letting \texttt{k} represent the index.
+	\item Use a nested loop from \texttt{k+1} to \texttt{n-1} to find index of smallest value.
+	\item Swap that value with \texttt{A[k]}. 
+	\item After $i^{th}$ iteration, \texttt{A[0]} through \texttt{A[i-1]} are ordered.
+\end{itemize}
+
+Complexity = $(N-1) + (N-2) + ... + 1 + 0 = O(N^{2})$.
+
+\subsubsection{Insertion Sort}
+
+\textbf{Insertion sort} is another $O(N^{2})$ complexity sorting algorithm. The basic approach is to put the first two items in correct relative order. Then insert the $3^{rd}$ item in the correct place relative to the first two. Then insert the $n^{th}$ item in the correct place relative to the previous $n-1$. 
+
+\begin{itemize}
+	\item Use outer loop from \texttt{k=1} to \texttt{k=n-1}.
+	\item Use inner loop from \texttt{j=k-1} to \texttt{0} \textit{as long as \texttt{A[j] > A[k]}}. 
+	\item Each time, shift higher numbers up (\texttt{A[j+1]=A[j]}) to make space for eventual insertion. 
+	\item Insert \texttt{A[k]} into final \texttt{A[j]}. 
+	\item After the $i^{th}$ iteration, \texttt{A[0]} through \texttt{A[i-1]} are relatively ordered but are not in the final position. 
+\end{itemize}
+
+\subsubsection{Merge Sort}
+
+\textbf{Merge sort} is an $O(N \log(N))$ \textit{divide and conquer} algorithm. It takes advantage of the fact that it is possible to merge two sorted arrays, each containing $N/2$ items, in $O(N)$ time. It works by simultaneously stepping through the two arrays and always choosing the smaller value to put in the final array. 
+
+\begin{itemize}
+	\item Divide the array into two halves.
+	\item Recursively sort the left half. 
+	\item Recursively sort the right half. 
+	\item Merge the two sorted halves (requires temporary auxiliary array). 
+\end{itemize}
+
+\subsubsection{Quick Sort}
+
+\textbf{Quick sort} is another on average $O(N \log(N)$ divide and conquer sorting algorithm. Compared with merge sort, it does more work during the "divide" part in order to avoid work in the "combine" part. The idea is to start by \textit{partitioning} the array using some \textit{median} value (or \textit{pivo} value). Then use 2 pointers at opposite ends of the array to perform swaps of values. 
+
+\begin{itemize}
+	\item Choose a pivot value -- put pivot at end of array (swap with existing).
+	\item Partition the array. Put all entries less than pivot in the left part and all entries greater than the pivot in the right part, with the pivot in the middle. 
+	\item Recursively, sort the values less than or equal to the pivot. 
+	\item Recursively, sort the values greater than or equal to the pivot. 
+\end{itemize}
+
+Note: a poorly chosen pivot can lead to $O(N^{2})$ complexity. The \textbf{median of three} technique can be useful for choosing a pivot: pick median value from sampling beginning, middle, and end of array. Upper value placed at end of array, median placed next to end, low value placed at beginning of array. 
+
+Note that the quick sort algorithm does not require extra storage space, unlike the merge sort algorithm. 
+
+\subsubsection{Heap Sort}
+
+\textbf{Heap sort} is an $O(N \log(N))$ complexity sorting algorithm. The idea is to insert each item into an initially empty heap. Then fill the array right-to-left as follows: while the heap is not empty, do one \texttt{removeMax} operation and put the returned value into the next position of the array. 
+
+\subsubsection{Radix Sort}
+
+\textbf{Radix sort} is not a comparison sort. It is useful on sequences of \textit{comparable} values, like sequences of characters or numbers. The time is $O((N + R)*L)$, where $N$ is the number of sequences, $R$ is the range of values ieach item could have, $L$ is the maximum length of the sequences. The approach uses an array of queues. 
+
+\begin{itemize}
+	\item Process each sequence right-to-left (least to most significant digit).
+	\item Each pass, values taken from original array and stored in a queue in the auxiliary array based on the value of the current digit. Note: the auxiliary array has length $L$, and the queues at each array position handle duplicates etx. 
+	\item Queues are dequeued back into the original array, ready for next pass.
+\end{itemize}
+
+The queue structure preserves previous ordering. It is often \textit{better} than $O(N \log(N))$. 
+
+\subsubsection{Bubble Sort}
+
+\textbf{Bubble sort} is a sorting algorithm of complexity $O(N^{2})$. Each pass through the unsorted part "bubbles" the next smallest item from unsorted to the back of the sorted part. 
+
+\begin{itemize}
+%	\item loop \texttt{(i=0; i<array_length-1):}
+%	\item loop \texttt{(j<array_length-1, j>i):}
+	\item swap \texttt{A[j]} with \texttt{A[j-1]} if it is smaller, so that small values bubble all the way down. 
+\end{itemize}
+
+
+%------------------------------------------------
+% Subsection: Searching
+\subsection{Searching in an Array}
+
+There are two basic approaches to searching in an array: \textbf{sequential} search and \textbf{binary} search. Sequential search involves looking at each value in turn. It is faster for sorted arrays $O(N)$. Binary search (for sorted array) involves looking at the middle item, comparing with the value of interest, then eliminating half of the array from the search $O(\log(N))$. 
+
+
+%------------------------------------------------
+%Subsection: Dijkstra's Algorithm
+\subsection{Dijkstra's Algorithm}
+
+Dijkstra's algorithm is an algorithm for finding the shortest path between nodes in a graph. For a given source node in the graph, the algorithm finds the shortest path between that node and every other. It can also be used for finding the shortest paths from a single node to a single destination node by stopping the algorithm once the shortest path to the destination node has been determined. 
+
+The original algorithm does not use a min-priority queue, and it runs in time $O(N^{2})$, where $N$ is the number of nodes. When implemented with a min-priority queue, the algorithm can be sped up to $O(N \log N + E)$, where $E$ is the number of edges. 
+
+Start at an initial node. For a given node $Y$, define distance as the distance from the initial node to $Y$. 
+
+\begin{itemize}
+	\item Assign an infinite distance value to all nodes other than start, which is zero.
+	\item Set the initial node as current. Mark other nodes as unvisited. Create an unvisited set.
+	\item For the current node, consider all of its neighbors and calculate their tentative distances. Compare newly calculated tentative distance to the current value and keep the smaller one. 
+	\item Mark the current node as visited and remove it from the unvisited set. 
+	\item Stop if the destination node has been marked visited
+	\item Otherwise, select the unvisited node with the smallest tentative distance, set it as the new current node, and return to step 3.
+\end{itemize}
+
+
+%------------------------------------------------
+%Subsection: A* Algorithm
+\subsection{A* Search Algorithm}
+
+The A* search algorithm is an algorithm that is widely used in pathfinding and graph traversal (plotting an efficient path between multiple nodes). It is an extension of Dijkstra's algorithm, and has been noted for its performance and accuracy.
+
+A* is a best-first search, which means that is solves problems by searching among all possible paths to the solution for the one that incurs the smallest cost, and among these paths it first considers the ones that appear to lead most quickly to the solution. It is formulated in terms of weighted graphs. Starting from a specific node, it constructs a tree of paths starting from that node, expanding paths one step at a time, until one of its paths ends at the predetermined goal node. 
+
+At each iteration of its main loop, A* needs to determine which of its partial paths to expand into one or more longer paths. It does so based on an estimate of the cost still to go to the goal node. Specifically, A* selects the path that minimizes
+
+\begin{equation}
+	f(n) = g(n) + h(n)
+\end{equation}
+
+where $n$ is the last node on the path, $g(n)$ is the cost of the path from the start node to $n$, and $h(n)$ is a heuristic that estimates the cost of the cheapest path from $n$ to the goal. The heuristic is the tricky part, and is problem-specific. In order for the algorithm to find the actual shortest path, the heuristic must never overestimate the actual cost to get to the nearest goal node. One example of the heuristic is the straight-line distance between two places on a map, in the context of a search for the shortest distance via roads. 
+
+Typically, A* is implemented with a \textit{priority queue} to perform the repeated selection of minimum (estimated) cost nodes to expand. At each step of the algorithm, the node with the lowest $f(x)$ value is removed from the queue. From there, the $f$ and $g$ values of its neighbors are updated accordingly, and these neighbors are added to the queue. The algorithm continues until a goal node has a lower $f$ value than any node in the queue (or until the queue is empty). The $f$ value of the goal is then the length of the shortest path. 
