@@ -19,7 +19,7 @@ Dynamic programming is a method of solving problems. It is similar to a \textit{
 % Subsection: Sorting Algorithms
 \subsection{Sorting Algorithms}
 
-\textbf{Sorting} involves putting the values of an array into some order. \textbf{comparison sorts} work by comparing values. Simple algorithms are $O(N^{2})$, though the best-possible performance is $O(N\log(N))$. \\
+\textbf{Sorting} involves putting the values of an array into some order. \textbf{Comparison sorts} work by comparing values. Simple algorithms are $O(N^{2})$, though the best-possible performance is $O(N\log(N))$. \\
 
 \begin{tabular}{p{0.3\textwidth}p{0.5\textwidth}}
 Name & Complexity \\
@@ -71,7 +71,7 @@ Complexity = $(N-1) + (N-2) + ... + 1 + 0 = O(N^{2})$.
 
 \subsubsection{Quick Sort}
 
-\textbf{Quick sort} is another on average $O(N \log(N)$ divide and conquer sorting algorithm. Compared with merge sort, it does more work during the "divide" part in order to avoid work in the "combine" part. The idea is to start by \textit{partitioning} the array using some \textit{median} value (or \textit{pivo} value). Then use 2 pointers at opposite ends of the array to perform swaps of values. 
+\textbf{Quick sort} is another on average $O(N \log(N)$ divide and conquer sorting algorithm. Compared with merge sort, it does more work during the "divide" part in order to avoid work in the "combine" part. The idea is to start by \textit{partitioning} the array using some \textit{median} value (or \textit{pivot} value). Then use 2 pointers at opposite ends of the array to perform swaps of values. 
 
 \begin{itemize}
 	\item Choose a pivot value -- put pivot at end of array (swap with existing).

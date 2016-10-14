@@ -193,7 +193,7 @@ Some tree terminology is provided in the table below. \\
 
 \begin{tabular}{p{0.3\textwidth}p{0.7\textwidth}}
 \textbf{Node} & A single element of the tree \\
-\textbf{Edge} & Arrow connecting two nodes \\
+\textbf{Edge} & Connection between two nodes \\
 \textbf{Root} & Top-most node of the tree (has no \textbf{parent}) \\
 \textbf{Leaf} & bottom nodes (has no \textbf{children}) \\
 \textbf{Ancestors} & The preceding nodes in a tree \\
@@ -414,7 +414,7 @@ Here are some types of graphs:
 	\item \textit{directed acyclic graph (DAG)}: a directed graph that has NO cyclic paths. 
 	\item \textit{Complete graph}: an undirected graph that has an edge between every pair of nodes, or a directed graph that has an edge from every node to every other node. 
 	\item \textit{Weighted graph}: A graph with values associated with the edges. 
-	\item Ptextit{Network}: A weighted di-graph (directed graph) with non-negative weights. 
+	\item \textit{Network}: A weighted di-graph (directed graph) with non-negative weights. 
 \end{itemize}
 
 \subsubsection{Depth-First Search}
@@ -455,19 +455,23 @@ Breadth-first search is similar to the \textit{level-order} traversal of the tre
 % Subsection: Data Structures in C++
 \subsection{Data Structures in C++}
 
-This section provides notes on data structures and coding generally in C++. A list of primitive types in C++ is given below. Also, table \ref{tab:cpp_structures} provides a description of some basic C++ data structures. 
+This section provides notes on data structures and coding generally in C++. A list of primitive types in C++ is given in Table \ref{tab:cpp_primitives}. Also, Table \ref{tab:cpp_structures} provides a description of some basic C++ data structures. \\
 
-\begin{itemize}
-	\item \texttt{bool} - a boolean (1 bit)
-	\item \texttt{char} - a character (1 byte)
-	\item \texttt{int} - an integer (4 bytes)
-	\item \texttt{float} - a floating point number (4 bytes)
-	\item \texttt{double} - a double floating point number (8 bytes)
-	\item \texttt{void} - a valueless type
-	\item \texttt{wchar\_t} - a wide character (2-4 bytes)
-\end{itemize}
+\begin{tabular}{p{0.3\textwidth} p{0.7\textwidth}}
+	\textbf{Primitive Type} & \textbf{Description} \\
+	\hline
+	\texttt{bool} & a boolean (1 bit) \\
+	\texttt{char} & a character (1 byte) \\
+	\texttt{int} & an integer (4 bytes) \\
+	\texttt{float} & a floating point number (4 bytes) \\
+	\texttt{double} & a double floating point number (8 bytes) \\
+	\texttt{void} & a valueless type \\
+	\texttt{wchar\_t} & a wide character (2-4 bytes) \\
+	\hline
+	\label{tab:cpp_primitives}
+\end{tabular} \\
 
-The basic primitive types can be modified using one or more of the type modifiers: \texttt{signed}, \texttt{unsigned}, \texttt{short}, \texttt{long}. When a \texttt{char} or \texttt{int} is \texttt{unsigned}, the maximum value is doubled, but the possibility for negative values is removed. The bit size is unchanged. Using \texttt{short} reduces the number of bits by a factor of 2 (short int is 2 bytes, whereas int is 4 bytes). Using \texttt{long} increases the number of bits by a factor of 2 (long int is 8 bytes). 
+The basic primitive types can be modified using one or more of the type modifiers: \texttt{signed}, \texttt{unsigned}, \texttt{short}, \texttt{long}. When a \texttt{char} or \texttt{int} is \texttt{unsigned}, the maximum value is doubled, but the possibility for negative values is removed. The bit size is unchanged. Using \texttt{short} reduces the number of bits by a factor of 2 (short int is 2 bytes, whereas int is 4 bytes). Using \texttt{long} increases the number of bits by (up to) a factor of 2 (long int is 4-8 bytes). 
 
 \begin{tabular}{p{0.3\textwidth}p{0.6\textwidth}}
 	Name & Description \\
